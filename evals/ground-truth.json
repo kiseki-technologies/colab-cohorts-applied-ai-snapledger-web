@@ -1,0 +1,702 @@
+{
+  "version": "1.0",
+  "set": "labelled",
+  "description": "Correct answers for the 30 labelled SnapLedger sample receipts. Transcription fields are on the paper; judgement fields are not.",
+  "business_card_last4": "4021",
+  "categories": [
+    "Travel",
+    "Accommodation",
+    "Subsistence",
+    "Client entertainment",
+    "Software",
+    "Equipment",
+    "Office supplies",
+    "Postage",
+    "Professional development",
+    "Phone & internet",
+    "Insurance",
+    "Rent & workspace",
+    "Marketing",
+    "Other"
+  ],
+  "receipts": [
+    {
+      "file": "rcp-101.jpg",
+      "id": "rcp-101",
+      "transcription": {
+        "merchant": "Tesco Express",
+        "date": "2026-06-15",
+        "currency": "GBP",
+        "total": 6.2,
+        "vat": 0.41,
+        "card_last4": "4021"
+      },
+      "judgement": {
+        "category": "Subsistence",
+        "route": "auto",
+        "route_reason": null
+      },
+      "duplicate_of": null,
+      "difficulty": "easy",
+      "traits": [
+        "clean"
+      ]
+    },
+    {
+      "file": "rcp-102.jpg",
+      "id": "rcp-102",
+      "transcription": {
+        "merchant": "Pret A Manger",
+        "date": "2026-06-16",
+        "currency": "GBP",
+        "total": 7.9,
+        "vat": 1.32,
+        "card_last4": "4021"
+      },
+      "judgement": {
+        "category": "Subsistence",
+        "route": "auto",
+        "route_reason": null
+      },
+      "duplicate_of": null,
+      "difficulty": "easy",
+      "traits": [
+        "clean"
+      ]
+    },
+    {
+      "file": "rcp-103.jpg",
+      "id": "rcp-103",
+      "transcription": {
+        "merchant": "Trainline",
+        "date": "2026-06-16",
+        "currency": "GBP",
+        "total": 86.4,
+        "vat": 0,
+        "card_last4": "4021"
+      },
+      "judgement": {
+        "category": "Travel",
+        "route": "auto",
+        "route_reason": null
+      },
+      "duplicate_of": null,
+      "difficulty": "medium",
+      "traits": [
+        "digital",
+        "zero_rated"
+      ]
+    },
+    {
+      "file": "rcp-104.jpg",
+      "id": "rcp-104",
+      "transcription": {
+        "merchant": "Premier Inn",
+        "date": "2026-06-18",
+        "currency": "GBP",
+        "total": 199.98,
+        "vat": 33.33,
+        "card_last4": "4021"
+      },
+      "judgement": {
+        "category": "Accommodation",
+        "route": "auto",
+        "route_reason": null
+      },
+      "duplicate_of": null,
+      "difficulty": "medium",
+      "traits": [
+        "multi_line"
+      ]
+    },
+    {
+      "file": "rcp-105.jpg",
+      "id": "rcp-105",
+      "transcription": {
+        "merchant": "Post Office",
+        "date": "2026-06-18",
+        "currency": "GBP",
+        "total": 14.49,
+        "vat": null,
+        "card_last4": "4021"
+      },
+      "judgement": {
+        "category": "Postage",
+        "route": "auto",
+        "route_reason": null
+      },
+      "duplicate_of": null,
+      "difficulty": "hard",
+      "traits": [
+        "no_vat_line",
+        "exempt"
+      ]
+    },
+    {
+      "file": "rcp-106.jpg",
+      "id": "rcp-106",
+      "transcription": {
+        "merchant": "Uber",
+        "date": "2026-06-19",
+        "currency": "GBP",
+        "total": 21.6,
+        "vat": 3.6,
+        "card_last4": "4021"
+      },
+      "judgement": {
+        "category": "Travel",
+        "route": "auto",
+        "route_reason": null
+      },
+      "duplicate_of": null,
+      "difficulty": "easy",
+      "traits": [
+        "digital"
+      ]
+    },
+    {
+      "file": "rcp-107.jpg",
+      "id": "rcp-107",
+      "transcription": {
+        "merchant": "Screwfix",
+        "date": "2026-06-19",
+        "currency": "GBP",
+        "total": 92.98,
+        "vat": 15.5,
+        "card_last4": "4021"
+      },
+      "judgement": {
+        "category": "Equipment",
+        "route": "auto",
+        "route_reason": null
+      },
+      "duplicate_of": null,
+      "difficulty": "easy",
+      "traits": [
+        "clean"
+      ]
+    },
+    {
+      "file": "rcp-108.jpg",
+      "id": "rcp-108",
+      "transcription": {
+        "merchant": "Google Commerce Limited",
+        "date": "2026-06-20",
+        "currency": "GBP",
+        "total": 28.8,
+        "vat": 4.8,
+        "card_last4": "4021"
+      },
+      "judgement": {
+        "category": "Software",
+        "route": "auto",
+        "route_reason": null
+      },
+      "duplicate_of": null,
+      "difficulty": "easy",
+      "traits": [
+        "digital"
+      ]
+    },
+    {
+      "file": "rcp-109.jpg",
+      "id": "rcp-109",
+      "transcription": {
+        "merchant": "Riverside Kitchen",
+        "date": "2026-06-21",
+        "currency": "GBP",
+        "total": 75.35,
+        "vat": 11.42,
+        "card_last4": "4021"
+      },
+      "judgement": {
+        "category": "Client entertainment",
+        "route": "review",
+        "route_reason": "Total amended by hand — the printed total and the amount actually paid are different."
+      },
+      "duplicate_of": null,
+      "difficulty": "hard",
+      "traits": [
+        "handwritten_total",
+        "altered_total"
+      ]
+    },
+    {
+      "file": "rcp-110.jpg",
+      "id": "rcp-110",
+      "transcription": {
+        "merchant": "Caffè Nero",
+        "date": "2026-06-22",
+        "currency": "GBP",
+        "total": 6.4,
+        "vat": 1.07,
+        "card_last4": null
+      },
+      "judgement": {
+        "category": "Subsistence",
+        "route": "auto",
+        "route_reason": null
+      },
+      "duplicate_of": null,
+      "difficulty": "medium",
+      "traits": [
+        "blurry"
+      ]
+    },
+    {
+      "file": "rcp-111.jpg",
+      "id": "rcp-111",
+      "transcription": {
+        "merchant": "WHSmith",
+        "date": "2026-06-23",
+        "currency": "GBP",
+        "total": 15.33,
+        "vat": 1.14,
+        "card_last4": "4021"
+      },
+      "judgement": {
+        "category": "Office supplies",
+        "route": "auto",
+        "route_reason": null
+      },
+      "duplicate_of": null,
+      "difficulty": "medium",
+      "traits": [
+        "mixed_rates",
+        "judgement_category"
+      ]
+    },
+    {
+      "file": "rcp-112.jpg",
+      "id": "rcp-112",
+      "transcription": {
+        "merchant": "NCP Car Park",
+        "date": "2026-06-24",
+        "currency": "GBP",
+        "total": 14.0,
+        "vat": 2.33,
+        "card_last4": "4021"
+      },
+      "judgement": {
+        "category": "Travel",
+        "route": "auto",
+        "route_reason": null
+      },
+      "duplicate_of": null,
+      "difficulty": "medium",
+      "traits": [
+        "sparse"
+      ]
+    },
+    {
+      "file": "rcp-113.jpg",
+      "id": "rcp-113",
+      "transcription": {
+        "merchant": "Bristol City Council",
+        "date": "2026-06-24",
+        "currency": "GBP",
+        "total": 3.6,
+        "vat": null,
+        "card_last4": "4021"
+      },
+      "judgement": {
+        "category": "Travel",
+        "route": "auto",
+        "route_reason": null
+      },
+      "duplicate_of": null,
+      "difficulty": "hard",
+      "traits": [
+        "no_vat_line",
+        "sparse",
+        "exempt"
+      ]
+    },
+    {
+      "file": "rcp-114.jpg",
+      "id": "rcp-114",
+      "transcription": {
+        "merchant": "Vodafone Limited",
+        "date": "2026-06-25",
+        "currency": "GBP",
+        "total": 32.4,
+        "vat": 5.4,
+        "card_last4": "4021"
+      },
+      "judgement": {
+        "category": "Phone & internet",
+        "route": "auto",
+        "route_reason": null
+      },
+      "duplicate_of": null,
+      "difficulty": "easy",
+      "traits": [
+        "digital"
+      ]
+    },
+    {
+      "file": "rcp-115.jpg",
+      "id": "rcp-115",
+      "transcription": {
+        "merchant": "Deutsche Bahn",
+        "date": "2026-06-26",
+        "currency": "EUR",
+        "total": 76.9,
+        "vat": 12.28,
+        "card_last4": "4021"
+      },
+      "judgement": {
+        "category": "Travel",
+        "route": "review",
+        "route_reason": "Foreign currency — needs converting to GBP at the transaction date before it can be filed."
+      },
+      "duplicate_of": null,
+      "difficulty": "hard",
+      "traits": [
+        "foreign_currency",
+        "foreign_language"
+      ]
+    },
+    {
+      "file": "rcp-116.jpg",
+      "id": "rcp-116",
+      "transcription": {
+        "merchant": "Koffiehuis Zwart",
+        "date": "2026-06-26",
+        "currency": "EUR",
+        "total": 11.9,
+        "vat": 0.98,
+        "card_last4": null
+      },
+      "judgement": {
+        "category": "Subsistence",
+        "route": "review",
+        "route_reason": "Foreign currency — needs converting to GBP at the transaction date before it can be filed."
+      },
+      "duplicate_of": null,
+      "difficulty": "hard",
+      "traits": [
+        "foreign_currency",
+        "foreign_language",
+        "non_standard_vat_rate"
+      ]
+    },
+    {
+      "file": "rcp-117.jpg",
+      "id": "rcp-117",
+      "transcription": {
+        "merchant": "Apple Store",
+        "date": "2026-06-29",
+        "currency": "GBP",
+        "total": 99.0,
+        "vat": 16.5,
+        "card_last4": "4021"
+      },
+      "judgement": {
+        "category": "Equipment",
+        "route": "auto",
+        "route_reason": null
+      },
+      "duplicate_of": null,
+      "difficulty": "easy",
+      "traits": [
+        "digital"
+      ]
+    },
+    {
+      "file": "rcp-118.jpg",
+      "id": "rcp-118",
+      "transcription": {
+        "merchant": "Boots",
+        "date": "2026-06-30",
+        "currency": "GBP",
+        "total": 11.78,
+        "vat": 1.38,
+        "card_last4": "7738"
+      },
+      "judgement": {
+        "category": "Other",
+        "route": "review",
+        "route_reason": "Paid on a personal card (ending 7738, not the business card ending 4021) and the basket looks personal."
+      },
+      "duplicate_of": null,
+      "difficulty": "medium",
+      "traits": [
+        "personal_card",
+        "business_or_personal"
+      ]
+    },
+    {
+      "file": "rcp-119.jpg",
+      "id": "rcp-119",
+      "transcription": {
+        "merchant": "Tesco Superstore",
+        "date": "2026-06-27",
+        "currency": "GBP",
+        "total": 70.88,
+        "vat": 7.39,
+        "card_last4": "4021"
+      },
+      "judgement": {
+        "category": "Other",
+        "route": "review",
+        "route_reason": "Weekend supermarket shop — mostly household groceries with no obvious business purpose."
+      },
+      "duplicate_of": null,
+      "difficulty": "medium",
+      "traits": [
+        "long_receipt",
+        "business_or_personal"
+      ]
+    },
+    {
+      "file": "rcp-120.jpg",
+      "id": "rcp-120",
+      "transcription": {
+        "merchant": "Interaction Design Foundation",
+        "date": "2026-07-01",
+        "currency": "GBP",
+        "total": 150.0,
+        "vat": 25.0,
+        "card_last4": "4021"
+      },
+      "judgement": {
+        "category": "Professional development",
+        "route": "auto",
+        "route_reason": null
+      },
+      "duplicate_of": null,
+      "difficulty": "easy",
+      "traits": [
+        "digital"
+      ]
+    },
+    {
+      "file": "rcp-121.jpg",
+      "id": "rcp-121",
+      "transcription": {
+        "merchant": "The Old Bookshop",
+        "date": "2026-07-02",
+        "currency": "GBP",
+        "total": null,
+        "vat": null,
+        "card_last4": null
+      },
+      "judgement": {
+        "category": "Office supplies",
+        "route": "review",
+        "route_reason": "Total is illegible — the thermal print has faded."
+      },
+      "duplicate_of": null,
+      "difficulty": "hard",
+      "traits": [
+        "thermal_fade",
+        "illegible_total"
+      ]
+    },
+    {
+      "file": "rcp-122.jpg",
+      "id": "rcp-122",
+      "transcription": {
+        "merchant": null,
+        "date": "2026-07-03",
+        "currency": "GBP",
+        "total": 8.5,
+        "vat": 1.42,
+        "card_last4": "4021"
+      },
+      "judgement": {
+        "category": "Subsistence",
+        "route": "review",
+        "route_reason": "Merchant name is missing — the top of the receipt is torn off."
+      },
+      "duplicate_of": null,
+      "difficulty": "hard",
+      "traits": [
+        "torn",
+        "illegible_merchant"
+      ]
+    },
+    {
+      "file": "rcp-123.jpg",
+      "id": "rcp-123",
+      "transcription": {
+        "merchant": "Caffè Nero",
+        "date": "2026-07-06",
+        "currency": "GBP",
+        "total": 5.6,
+        "vat": 0.93,
+        "card_last4": "4021"
+      },
+      "judgement": {
+        "category": "Subsistence",
+        "route": "auto",
+        "route_reason": null
+      },
+      "duplicate_of": null,
+      "difficulty": "easy",
+      "traits": [
+        "duplicate_pair"
+      ]
+    },
+    {
+      "file": "rcp-124.jpg",
+      "id": "rcp-124",
+      "transcription": {
+        "merchant": "Caffè Nero",
+        "date": "2026-07-06",
+        "currency": "GBP",
+        "total": 5.6,
+        "vat": 0.93,
+        "card_last4": "4021"
+      },
+      "judgement": {
+        "category": "Subsistence",
+        "route": "review",
+        "route_reason": "Possible duplicate of rcp-123 — same merchant, date and total, captured twice."
+      },
+      "duplicate_of": "rcp-123",
+      "difficulty": "hard",
+      "traits": [
+        "duplicate_pair",
+        "digital"
+      ]
+    },
+    {
+      "file": "rcp-125.jpg",
+      "id": "rcp-125",
+      "transcription": {
+        "merchant": "Shell",
+        "date": "2026-07-07",
+        "currency": "GBP",
+        "total": 54.17,
+        "vat": 9.03,
+        "card_last4": "4021"
+      },
+      "judgement": {
+        "category": "Travel",
+        "route": "auto",
+        "route_reason": null
+      },
+      "duplicate_of": null,
+      "difficulty": "medium",
+      "traits": [
+        "sparse"
+      ]
+    },
+    {
+      "file": "rcp-126.jpg",
+      "id": "rcp-126",
+      "transcription": {
+        "merchant": "Amazon Business",
+        "date": "2026-07-08",
+        "currency": "GBP",
+        "total": 50.48,
+        "vat": 8.41,
+        "card_last4": "4021"
+      },
+      "judgement": {
+        "category": "Equipment",
+        "route": "auto",
+        "route_reason": null
+      },
+      "duplicate_of": null,
+      "difficulty": "easy",
+      "traits": [
+        "digital"
+      ]
+    },
+    {
+      "file": "rcp-127.jpg",
+      "id": "rcp-127",
+      "transcription": {
+        "merchant": "M. Kowalczyk Carpentry",
+        "date": "2026-07-09",
+        "currency": "GBP",
+        "total": 140.0,
+        "vat": null,
+        "card_last4": null
+      },
+      "judgement": {
+        "category": "Other",
+        "route": "review",
+        "route_reason": "Handwritten cash receipt with no VAT number — needs a manual check before it can be filed."
+      },
+      "duplicate_of": null,
+      "difficulty": "hard",
+      "traits": [
+        "fully_handwritten",
+        "no_vat_line",
+        "cash"
+      ]
+    },
+    {
+      "file": "rcp-128.jpg",
+      "id": "rcp-128",
+      "transcription": {
+        "merchant": "Slack Technologies Limited",
+        "date": "2026-07-10",
+        "currency": "GBP",
+        "total": 31.5,
+        "vat": 0.0,
+        "card_last4": "4021"
+      },
+      "judgement": {
+        "category": "Software",
+        "route": "review",
+        "route_reason": "EU reverse charge — VAT is not shown on the invoice and has to be self-accounted."
+      },
+      "duplicate_of": null,
+      "difficulty": "hard",
+      "traits": [
+        "reverse_charge",
+        "digital"
+      ]
+    },
+    {
+      "file": "rcp-129.jpg",
+      "id": "rcp-129",
+      "transcription": {
+        "merchant": "Markel Direct",
+        "date": "2026-07-10",
+        "currency": "GBP",
+        "total": 248.0,
+        "vat": null,
+        "card_last4": "4021"
+      },
+      "judgement": {
+        "category": "Insurance",
+        "route": "auto",
+        "route_reason": null
+      },
+      "duplicate_of": null,
+      "difficulty": "hard",
+      "traits": [
+        "no_vat_line",
+        "ipt_trap"
+      ]
+    },
+    {
+      "file": "rcp-130.jpg",
+      "id": "rcp-130",
+      "transcription": {
+        "merchant": "Runway Bristol",
+        "date": "2026-07-11",
+        "currency": "GBP",
+        "total": 180.0,
+        "vat": 30.0,
+        "card_last4": "4021"
+      },
+      "judgement": {
+        "category": "Rent & workspace",
+        "route": "auto",
+        "route_reason": null
+      },
+      "duplicate_of": null,
+      "difficulty": "medium",
+      "traits": [
+        "photographed_document"
+      ]
+    }
+  ]
+}

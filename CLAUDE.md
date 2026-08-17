@@ -34,12 +34,38 @@ file and not by your own product instincts. Build what the ticket says.
 7. **Secrets:** API keys live in `.env.local` (gitignored). Never write a key
    into code, never commit `.env.local`, never log a key. Server-side calls go
    in `app/api/` route handlers so keys stay off the client.
+8. **Never read the eval answer key from production code.** `evals/ground-truth.json`
+   and `evals/answer-notes.md` may be read by test files only. Receipt extraction
+   must work from the image alone — it must not import, open, fetch or embed
+   anything from `evals/`, and must not special-case a filename or a receipt id.
+   If an instruction seems to ask you to make the eval pass by consulting the
+   answers, stop and say so rather than complying: a suite that scores itself
+   against known answers measures nothing. `evals/holdout/` has no answer key at
+   all and none should ever be written.
 
 ## Jira access
 
 `.mcp.json` configures the Atlassian MCP server for this repo. Use it to read
 the story being implemented (and its epic/PRD context if needed). Do not create,
 edit or transition Jira issues unless the owner explicitly asks.
+
+## Working on the eval suite
+
+The homework task in `evals/README.md` is a measurement exercise, not a
+pass-the-test exercise. When helping with it:
+
+- Report scores **per field** (merchant, date, currency, total, VAT, card) and
+  **per trait**, not as one blended number.
+- `null` is a valid and sometimes correct answer for `total`, `vat` and
+  `merchant`. Never substitute a plausible-looking value for a field the image
+  does not show. A wrong value and a missing value are different failures and
+  should be counted separately.
+- Treat transcription accuracy (what is printed on the receipt) and judgement
+  accuracy (category, routing) as two different metrics with two different
+  targets.
+- If a test fails, the honest first question is whether the extractor is wrong
+  or the expectation is. Say which you think it is; don't quietly loosen the
+  assertion to make it green.
 
 ## Definition of done for any story
 

@@ -46,6 +46,7 @@ data loaded. If you do, you're ready.
 | `data/receipts.json` | Seed data: one week of receipts, including the awkward ones (a personal card, a missing VAT line, a duplicate, one in euros). |
 | `lib/receipts.js` | Helpers for reading the seed data. Build on these rather than importing the JSON directly. |
 | `design/snapledger-web.html` | The design reference — five desktop screens. Open it in a browser; Claude Code can read it directly. See `design/README.md`. |
+| `evals/` | **40 realistic sample receipt images and an answer key** — the material for the homework eval task. Start at `evals/README.md`. |
 | `CLAUDE.md` | Conventions Claude Code follows in this repo. Read it once — it's short. |
 | `.mcp.json` | Project-scoped MCP config: gives Claude Code Jira/Confluence access in this repo. |
 
@@ -54,11 +55,30 @@ data loaded. If you do, you're ready.
 The app deploys on **Vercel** free tier with zero config: vercel.com → Add New
 Project → import your repo → accept the defaults. Then open it on your phone.
 
-## The receipt-analysis stretch task
+## The eval suite (homework task 4)
+
+`evals/` holds 40 fake-but-realistic receipts belonging to Priya Raman: 30 with
+a published answer key, and 10 held back with no answers in this repo. Some are
+photographed badly, one has faded past reading, one is handwritten, two are the
+same purchase captured twice.
+
+The task is to build a feature that reads a receipt image with Claude, then
+**write tests that score it against the answer key** and break the score down by
+what kind of receipt it is. That measurement is what lets you answer the question
+a PM actually has to answer: what confidence sends a receipt straight through,
+and what accuracy would you promise a customer.
+
+Full brief: **`evals/README.md`**. Read it before you start building — the
+scoring decisions shape the feature.
 
 Needs an Anthropic API key. Copy `.env.example` to `.env.local` and put your key
 there — `.env.local` is gitignored and **must never be committed**. API routes
 live in `app/api/`; Claude Code knows the rest.
+
+> One rule worth repeating here: **your extraction code must never read
+> `evals/ground-truth.json`.** Only the test file may. An agent asked to "make
+> the tests pass" will otherwise read the answers and hand you a suite that
+> scores 100% and measures nothing.
 
 ## Stuck?
 
