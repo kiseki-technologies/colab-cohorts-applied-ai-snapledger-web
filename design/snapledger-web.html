@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Geist+Mono:wght@100..900&display=swap" rel="stylesheet">
+<style>
+  body { margin: 0; background: oklch(14.8% .004 228.8); font-family: "Geist", ui-sans-serif, system-ui, sans-serif; }
+  a { color: oklch(78.5% .115 274.713); text-decoration: none; }
+  a:hover { color: oklch(88% .07 274.713); }
+</style>
+</helmet>
+
+<div style="background: radial-gradient(1200px 700px at 8% -5%, color-mix(in srgb, oklch(58.5% .233 277.117) 20%, transparent), transparent 70%), radial-gradient(1000px 600px at 92% 10%, color-mix(in srgb, oklch(68.5% .169 237.323) 12%, transparent), transparent 65%), radial-gradient(900px 700px at 50% 102%, color-mix(in srgb, oklch(69.6% .17 162.48) 10%, transparent), transparent 70%), oklch(14.8% .004 228.8); color: oklch(98.7% .002 197.1); padding: 56px 56px 96px; min-height: 100vh; box-sizing: border-box; font-family: 'Geist', ui-sans-serif, system-ui, sans-serif;">
+
+  <div style="display: flex; flex-direction: column; gap: 10px; max-width: 900px; margin-bottom: 40px;">
+    <div style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.5);">SnapLedger · Web application · Companion to the mobile concept</div>
+    <div style="font-size: 40px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.1;">The same four jobs, at desk width.</div>
+    <div style="font-size: 15px; line-height: 1.6; color: rgba(255,255,255,0.6); max-width: 680px; text-wrap: pretty;">Five screens at 1400 × 880. Nothing new is introduced — setup, the review queue, the business-or-personal call and paper capture are the same flows, re-cut for a surface where a list and its detail can sit side by side.</div>
+  </div>
+
+  <sc-if value="{{ showRationale }}" hint-placeholder-val="{{ true }}">
+    <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; max-width: 1100px; margin-bottom: 56px;">
+      <div style="border: 1px solid rgba(255,255,255,0.10); border-radius: 10px; padding: 18px; display: flex; flex-direction: column; gap: 8px; background: color-mix(in srgb, oklch(68.5% .169 237.323) 10%, oklch(21.8% .008 223.9));">
+        <div style="font-size: 13px; font-weight: 600;">What changes at this width</div>
+        <div style="font-size: 13px; line-height: 1.6; color: rgba(255,255,255,0.6); text-wrap: pretty;">The queue stops being a card stack and becomes a list beside a detail pane. Two mobile screens — the item and its reasoning — collapse into one view, because there is room to show the working without a second tap.</div>
+      </div>
+      <div style="border: 1px solid rgba(255,255,255,0.10); border-radius: 10px; padding: 18px; display: flex; flex-direction: column; gap: 8px; background: color-mix(in srgb, oklch(58.5% .233 277.117) 12%, oklch(21.8% .008 223.9));">
+        <div style="font-size: 13px; font-weight: 600;">What does not change</div>
+        <div style="font-size: 13px; line-height: 1.6; color: rgba(255,255,255,0.6); text-wrap: pretty;">One decision per item, confidence and reasoning on every match, an audit trail, and no in-the-moment work. Desk width buys density, not extra steps — the same three items are still the whole weekly job.</div>
+      </div>
+      <div style="border: 1px solid rgba(255,255,255,0.10); border-radius: 10px; padding: 18px; display: flex; flex-direction: column; gap: 8px; background: color-mix(in srgb, oklch(69.6% .17 162.48) 10%, oklch(21.8% .008 223.9));">
+        <div style="font-size: 13px; font-weight: 600;">Where the camera goes</div>
+        <div style="font-size: 13px; line-height: 1.6; color: rgba(255,255,255,0.6); text-wrap: pretty;">A laptop has no useful camera for a till receipt, so paper capture becomes drag-and-drop plus a hand-off to the phone. It is the one screen with no direct mobile equivalent.</div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ showShellSpec }}" hint-placeholder-val="{{ true }}">
+    <div style="max-width: 1100px; margin-bottom: 56px; border: 1px solid rgba(255,255,255,0.10); border-radius: 10px; background: oklch(21.8% .008 223.9); overflow: hidden;">
+      <div style="padding: 16px 20px; border-bottom: 1px solid rgba(255,255,255,0.10); display: flex; align-items: baseline; gap: 12px;">
+        <div style="font-size: 14px; font-weight: 600;">The desktop shell</div>
+        <div style="font-size: 13px; color: rgba(255,255,255,0.55);">Fixed on all five screens · 1400 × 880 viewport</div>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));">
+        <div style="padding: 18px 20px; border-right: 1px solid rgba(255,255,255,0.10); display: flex; flex-direction: column; gap: 8px;">
+          <div style="font-family: 'Geist Mono', monospace; font-size: 12px; color: oklch(82.8% .111 230.318);">&lt;Sidebar /&gt;</div>
+          <div style="font-family: 'Geist Mono', monospace; font-size: 12px; color: rgba(255,255,255,0.55);">width 240 · rows 34</div>
+          <div style="font-size: 13px; line-height: 1.6; color: rgba(255,255,255,0.7);">Six destinations, one count badge, signed-in user pinned to the bottom.</div>
+        </div>
+        <div style="padding: 18px 20px; border-right: 1px solid rgba(255,255,255,0.10); display: flex; flex-direction: column; gap: 8px;">
+          <div style="font-family: 'Geist Mono', monospace; font-size: 12px; color: oklch(78.5% .115 274.713);">&lt;TopBar /&gt;</div>
+          <div style="font-family: 'Geist Mono', monospace; font-size: 12px; color: rgba(255,255,255,0.55);">height 56 · sticky</div>
+          <div style="font-size: 13px; line-height: 1.6; color: rgba(255,255,255,0.7);">Page name left, at most two actions right. Never holds the primary decision.</div>
+        </div>
+        <div style="padding: 18px 20px; border-right: 1px solid rgba(255,255,255,0.10); display: flex; flex-direction: column; gap: 8px;">
+          <div style="font-family: 'Geist Mono', monospace; font-size: 12px; color: oklch(90.5% .093 164.15);">&lt;Content /&gt;</div>
+          <div style="font-family: 'Geist Mono', monospace; font-size: 12px; color: rgba(255,255,255,0.55);">padding 24 · gap 20 · rows 44</div>
+          <div style="font-size: 13px; line-height: 1.6; color: rgba(255,255,255,0.7);">Cards at 10px radius on the card surface. Tables are divided rows, no outer grid.</div>
+        </div>
+        <div style="padding: 18px 20px; display: flex; flex-direction: column; gap: 8px;">
+          <div style="font-family: 'Geist Mono', monospace; font-size: 12px; color: oklch(87.9% .169 91.605);">&lt;DecisionBar /&gt;</div>
+          <div style="font-family: 'Geist Mono', monospace; font-size: 12px; color: rgba(255,255,255,0.55);">height 72 · buttons 40</div>
+          <div style="font-size: 13px; line-height: 1.6; color: rgba(255,255,255,0.7);">Pinned to the foot of the detail pane, the desktop counterpart of the mobile action bar.</div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 22px;">
+    <div style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: oklch(82.8% .111 230.318); border-left: 3px solid oklch(68.5% .169 237.323); padding-left: 10px;">W1 · Home</div>
+    <div style="font-size: 13px; line-height: 1.5; color: rgba(255,255,255,0.6); max-width: 720px;">The mobile home screen, given room to show the week rather than summarise it. The three items that need a decision sit above the eleven that did not.</div>
+  </div>
+
+  <div style="margin-bottom: 72px;">
+    <x-import component-from-global-scope="ChromeWindow" from="./browser-window.jsx" width="{{ 1400 }}" height="{{ 880 }}" url="app.snapledger.co.uk/home" tabs="{{ tabsHome }}" hint-size="1400px,880px">
+      <div data-screen-label="W1 Home" style="height: 100%; display: flex; background: oklch(14.8% .004 228.8); color: oklch(98.7% .002 197.1); font-family: 'Geist', system-ui, sans-serif;">
+
+        <div style="width: 240px; flex-shrink: 0; box-sizing: border-box; border-right: 1px solid rgba(255,255,255,0.10); background: oklch(17.5% .005 226); display: flex; flex-direction: column; padding: 14px 12px;">
+          <div style="display: flex; align-items: center; gap: 10px; padding: 6px 8px 18px;">
+            <div style="width: 24px; height: 24px; border-radius: 6px; background: oklch(48.8% .243 264.376); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600;">S</div>
+            <div style="font-size: 14px; font-weight: 600;">SnapLedger</div>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 2px;">
+            <div style="height: 34px; border-radius: 8px; padding: 0 10px; display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.07); font-size: 14px; font-weight: 500;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5 12 3l9 6.5V21H3z"></path></svg>
+              <span>Home</span>
+            </div>
+            <div style="height: 34px; border-radius: 8px; padding: 0 10px; display: flex; align-items: center; gap: 10px; font-size: 14px; color: rgba(255,255,255,0.7);">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>
+              <span style="flex: 1;">Review</span>
+              <span style="font-family: 'Geist Mono', monospace; font-size: 11px; padding: 2px 7px; border-radius: 999px; background: oklch(48.8% .243 264.376); color: #fff;">3</span>
+            </div>
+            <div style="height: 34px; border-radius: 8px; padding: 0 10px; display: flex; align-items: center; gap: 10px; font-size: 14px; color: rgba(255,255,255,0.7);">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path><path d="M14 2v5h5"></path></svg>
+              <span>Receipts</span>
+            </div>
+            <div style="height: 34px; border-radius: 8px; padding: 0 10px; display: flex; align-items: center; gap: 10px; font-size: 14px; color: rgba(255,255,255,0.7);">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"></rect><path d="M2 10h20"></path></svg>
+              <span style="flex: 1;">Transactions</span>
+              <span style="font-family: 'Geist Mono', monospace; font-size: 11px; color: oklch(82.8% .189 84.429);">17</span>
+            </div>
+            <div style="height: 34px; border-radius: 8px; padding: 0 10px; display: flex; align-items: center; gap: 10px; font-size: 14px; color: rgba(255,255,255,0.7);">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg>
+              <span>Clients</span>
+            </div>
+            <div style="height: 34px; border-radius: 8px; padding: 0 10px; display: flex; align-items: center; gap: 10px; font-size: 14px; color: rgba(255,255,255,0.7);">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06A1.65 1.65 0 0 0 15 19.4a1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6 1.65 1.65 0 0 0 10 3.09V3a2 2 0 1 1 4 0v.09A1.65 1.65 0 0 0 15 4.6a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9c.14.35.44.62.79.73"></path></svg>
+              <span>Settings</span>
+            </div>
+          </div>
+          <div style="margin-top: auto; border-top: 1px solid rgba(255,255,255,0.10); padding: 12px 8px 4px; display: flex; align-items: center; gap: 10px;">
+            <div style="width: 28px; height: 28px; border-radius: 999px; background: rgba(255,255,255,0.10); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 500;">PR</div>
+            <div style="display: flex; flex-direction: column; gap: 1px; min-width: 0;">
+              <div style="font-size: 13px; font-weight: 500;">Priya Raman</div>
+              <div style="font-size: 11px; color: rgba(255,255,255,0.5); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">priya@ramandesign.co.uk</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="flex: 1; min-width: 0; display: flex; flex-direction: column;">
+          <div style="height: 56px; flex-shrink: 0; box-sizing: border-box; border-bottom: 1px solid rgba(255,255,255,0.10); padding: 0 24px; display: flex; align-items: center; justify-content: space-between; gap: 16px;">
+            <div style="display: flex; align-items: baseline; gap: 12px;">
+              <div style="font-size: 16px; font-weight: 600;">Home</div>
+              <div style="font-size: 13px; color: rgba(255,255,255,0.5);">Week of 6 July</div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <div style="height: 34px; box-sizing: border-box; border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; padding: 0 14px; display: flex; align-items: center; gap: 8px; font-size: 13px; color: rgba(255,255,255,0.85);">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg>
+                <span>Add Receipt</span>
+              </div>
+              <div style="height: 34px; box-sizing: border-box; border-radius: 8px; padding: 0 14px; display: flex; align-items: center; background: oklch(48.8% .243 264.376); font-size: 13px; font-weight: 500;">Start Review</div>
+            </div>
+          </div>
+
+          <div style="flex: 1; min-height: 0; overflow-y: auto; scrollbar-width: none; padding: 24px; display: flex; flex-direction: column; gap: 16px;">
+
+            <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; flex-shrink: 0;">
+              <div style="background: oklch(21.8% .008 223.9); border: 1px solid rgba(255,255,255,0.10); border-radius: 10px; padding: 16px; display: flex; flex-direction: column; gap: 6px;">
+                <div style="font-size: 12px; color: rgba(255,255,255,0.55);">Filed this week</div>
+                <div style="font-family: 'Geist Mono', monospace; font-size: 26px; font-weight: 500;">11</div>
+                <div style="font-size: 12px; color: rgba(255,255,255,0.45);">All from email</div>
+              </div>
+              <div style="background: oklch(21.8% .008 223.9); border: 1px solid rgba(255,255,255,0.10); border-radius: 10px; padding: 16px; display: flex; flex-direction: column; gap: 6px;">
+                <div style="font-size: 12px; color: rgba(255,255,255,0.55);">Need a decision</div>
+                <div style="font-family: 'Geist Mono', monospace; font-size: 26px; font-weight: 500; color: oklch(82.8% .189 84.429);">3</div>
+                <div style="font-size: 12px; color: rgba(255,255,255,0.45);">About 90 seconds</div>
+              </div>
+              <div style="background: oklch(21.8% .008 223.9); border: 1px solid rgba(255,255,255,0.10); border-radius: 10px; padding: 16px; display: flex; flex-direction: column; gap: 6px;">
+                <div style="font-size: 12px; color: rgba(255,255,255,0.55);">Recovered this quarter</div>
+                <div style="font-family: 'Geist Mono', monospace; font-size: 26px; font-weight: 500; color: oklch(79.2% .209 151.711);">£186</div>
+                <div style="font-size: 12px; color: rgba(255,255,255,0.45);">Would have been missed</div>
+              </div>
+              <div style="background: oklch(21.8% .008 223.9); border: 1px solid rgba(255,255,255,0.10); border-radius: 10px; padding: 16px; display: flex; flex-direction: column; gap: 6px;">
+                <div style="font-size: 12px; color: rgba(255,255,255,0.55);">VAT quarter to 30 Sep</div>
+                <div style="font-family: 'Geist Mono', monospace; font-size: 26px; font-weight: 500;">94%</div>
+                <div style="font-size: 12px; color: oklch(79.2% .209 151.711);">On track</div>
+              </div>
+            </div>
+
+            <div style="background: oklch(21.8% .008 223.9); border: 1px solid rgba(255,255,255,0.10); border-radius: 10px; overflow: hidden; flex-shrink: 0;">
+              <div style="padding: 14px 18px; border-bottom: 1px solid rgba(255,255,255,0.10); display: flex; align-items: baseline; justify-content: space-between; gap: 12px;">
+                <div style="display: flex; align-items: baseline; gap: 10px;">
+                  <div style="font-size: 14px; font-weight: 600;">Needs you</div>
+                  <div style="font-size: 13px; color: rgba(255,255,255,0.5);">3 items</div>
+                </div>
+                <div style="font-size: 13px; color: oklch(78.5% .115 274.713);">Review all</div>
+              </div>
+              <div style="display: grid; grid-template-columns: 2fr 1.4fr 1.2fr 1fr 120px; gap: 16px; padding: 10px 18px; border-bottom: 1px solid rgba(255,255,255,0.10); font-size: 12px; font-weight: 500; color: rgba(255,255,255,0.55);">
+                <div>Merchant</div>
+                <div>Why it stopped</div>
+                <div>Suggested</div>
+                <div style="text-align: right;">Amount</div>
+                <div></div>
+              </div>
+              <div style="display: grid; grid-template-columns: 2fr 1.4fr 1.2fr 1fr 120px; gap: 16px; padding: 0 18px; height: 56px; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08);">
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                  <div style="font-size: 14px; font-weight: 500;">Premier Inn</div>
+                  <div style="font-size: 12px; color: rgba(255,255,255,0.5);">Northampton · 7 Jul</div>
+                </div>
+                <div style="font-size: 13px; color: rgba(255,255,255,0.7);">Rebill unconfirmed</div>
+                <div style="font-size: 13px; color: rgba(255,255,255,0.7);">Accommodation</div>
+                <div style="font-family: 'Geist Mono', monospace; font-size: 13px; text-align: right;">£89.00</div>
+                <div style="display: flex; justify-content: flex-end;">
+                  <div style="font-size: 12px; font-weight: 500; color: oklch(79.2% .209 151.711); background: color-mix(in srgb, oklch(72.3% .219 149.579) 15%, transparent); border-radius: 999px; padding: 4px 10px;">96%</div>
+                </div>
+              </div>
+              <div style="display: grid; grid-template-columns: 2fr 1.4fr 1.2fr 1fr 120px; gap: 16px; padding: 0 18px; height: 56px; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08);">
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                  <div style="font-size: 14px; font-weight: 500;">Adobe</div>
+                  <div style="font-size: 12px; color: rgba(255,255,255,0.5);">Personal card · 9 Jul</div>
+                </div>
+                <div style="font-size: 13px; color: rgba(255,255,255,0.7);">No matching payment</div>
+                <div style="font-size: 13px; color: rgba(255,255,255,0.7);">Software</div>
+                <div style="font-family: 'Geist Mono', monospace; font-size: 13px; text-align: right;">£51.98</div>
+                <div style="display: flex; justify-content: flex-end;">
+                  <div style="font-size: 12px; font-weight: 500; color: oklch(87.9% .169 91.605); background: color-mix(in srgb, oklch(76.9% .188 70.08) 15%, transparent); border-radius: 999px; padding: 4px 10px;">74%</div>
+                </div>
+              </div>
+              <div style="display: grid; grid-template-columns: 2fr 1.4fr 1.2fr 1fr 120px; gap: 16px; padding: 0 18px; height: 56px; align-items: center;">
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                  <div style="font-size: 14px; font-weight: 500;">Tesco Express</div>
+                  <div style="font-size: 12px; color: rgba(255,255,255,0.5);">Bristol · 11 Jul</div>
+                </div>
+                <div style="font-size: 13px; color: rgba(255,255,255,0.7);">Business or personal</div>
+                <div style="font-size: 13px; color: rgba(255,255,255,0.7);">Subsistence</div>
+                <div style="font-family: 'Geist Mono', monospace; font-size: 13px; text-align: right;">£34.10</div>
+                <div style="display: flex; justify-content: flex-end;">
+                  <div style="font-size: 12px; font-weight: 500; color: oklch(87.9% .169 91.605); background: color-mix(in srgb, oklch(76.9% .188 70.08) 15%, transparent); border-radius: 999px; padding: 4px 10px;">62%</div>
+                </div>
+              </div>
+            </div>
+
+            <div style="background: oklch(21.8% .008 223.9); border: 1px solid rgba(255,255,255,0.10); border-radius: 10px; overflow: hidden; flex-shrink: 0;">
+              <div style="padding: 14px 18px; border-bottom: 1px solid rgba(255,255,255,0.10); display: flex; align-items: baseline; justify-content: space-between; gap: 12px;">
+                <div style="display: flex; align-items: baseline; gap: 10px;">
+                  <div style="font-size: 14px; font-weight: 600;">Filed without you</div>
+                  <div style="font-size: 13px; color: rgba(255,255,255,0.5);">11 this week</div>
+                </div>
+                <div style="font-size: 13px; color: oklch(78.5% .115 274.713);">See all</div>
+              </div>
+              <div style="display: grid; grid-template-columns: 2fr 1.4fr 1.6fr 1fr; gap: 16px; padding: 10px 18px; border-bottom: 1px solid rgba(255,255,255,0.10); font-size: 12px; font-weight: 500; color: rgba(255,255,255,0.55);">
+                <div>Merchant</div>
+                <div>Category</div>
+                <div>Matched to</div>
+                <div style="text-align: right;">Amount</div>
+              </div>
+              <div style="display: grid; grid-template-columns: 2fr 1.4fr 1.6fr 1fr; gap: 16px; padding: 0 18px; height: 44px; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08);">
+                <div style="font-size: 14px;">Figma</div>
+                <div style="font-size: 13px; color: rgba(255,255,255,0.7);">Software</div>
+                <div style="font-family: 'Geist Mono', monospace; font-size: 12px; color: rgba(255,255,255,0.6);">STARLING 04 JUL</div>
+                <div style="font-family: 'Geist Mono', monospace; font-size: 13px; text-align: right;">£45.00</div>
+              </div>
+              <div style="display: grid; grid-template-columns: 2fr 1.4fr 1.6fr 1fr; gap: 16px; padding: 0 18px; height: 44px; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08);">
+                <div style="font-size: 14px;">Trainline</div>
+                <div style="font-size: 13px; color: rgba(255,255,255,0.7);">Travel</div>
+                <div style="font-family: 'Geist Mono', monospace; font-size: 12px; color: rgba(255,255,255,0.6);">STARLING 06 JUL</div>
+                <div style="font-family: 'Geist Mono', monospace; font-size: 13px; text-align: right;">£68.20</div>
+              </div>
+              <div style="display: grid; grid-template-columns: 2fr 1.4fr 1.6fr 1fr; gap: 16px; padding: 0 18px; height: 44px; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08);">
+                <div style="font-size: 14px;">Interaction Design Foundation</div>
+                <div style="font-size: 13px; color: rgba(255,255,255,0.7);">Professional development</div>
+                <div style="font-family: 'Geist Mono', monospace; font-size: 12px; color: rgba(255,255,255,0.6);">STARLING 08 JUL</div>
+                <div style="font-family: 'Geist Mono', monospace; font-size: 13px; text-align: right;">£124.00</div>
+              </div>
+              <div style="display: grid; grid-template-columns: 2fr 1.4fr 1.6fr 1fr; gap: 16px; padding: 0 18px; height: 44px; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08);">
+                <div style="font-size: 14px;">Google Workspace</div>
+                <div style="font-size: 13px; color: rgba(255,255,255,0.7);">Software</div>
+                <div style="font-family: 'Geist Mono', monospace; font-size: 12px; color: rgba(255,255,255,0.6);">STARLING 09 JUL</div>
+                <div style="font-family: 'Geist Mono', monospace; font-size: 13px; text-align: right;">£13.80</div>
+              </div>
+              <div style="display: grid; grid-template-columns: 2fr 1.4fr 1.6fr 1fr; gap: 16px; padding: 0 18px; height: 44px; align-items: center;">
+                <div style="font-size: 14px;">NCP Car Park, Leeds</div>
+                <div style="font-size: 13px; color: rgba(255,255,255,0.7);">Parking and tolls</div>
+                <div style="font-family: 'Geist Mono', monospace; font-size: 12px; color: rgba(255,255,255,0.6);">NATWEST 09 JUL</div>
+                <div style="font-family: 'Geist Mono', monospace; font-size: 13px; text-align: right;">£8.00</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </x-import>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 22px;">
+    <div style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: oklch(78.5% .115 274.713); border-left: 3px solid oklch(58.5% .233 277.117); padding-left: 10px;">W2 · Review — list beside detail</div>
+    <div style="font-size: 13px; line-height: 1.5; color: rgba(255,255,255,0.6); max-width: 720px;">Mobile screens 04 and 05 merged. The reasoning that needed a second tap on the phone is simply present here, alongside the document and the audit trail.</div>
+  </div>
+
+  <div style="margin-bottom: 72px;">
+    <x-import component-from-global-scope="ChromeWindow" from="./browser-window.jsx" width="{{ 1400 }}" height="{{ 880 }}" url="app.snapledger.co.uk/review/1" tabs="{{ tabsReview }}" hint-size="1400px,880px">
+      <div data-screen-label="W2 Review high confidence" style="height: 100%; display: flex; background: oklch(14.8% .004 228.8); color: oklch(98.7% .002 197.1); font-family: 'Geist', system-ui, sans-serif;">
+
+        <div style="width: 240px; flex-shrink: 0; box-sizing: border-box; border-right: 1px solid rgba(255,255,255,0.10); background: oklch(17.5% .005 226); display: flex; flex-direction: column; padding: 14px 12px;">
+          <div style="display: flex; align-items: center; gap: 10px; padding: 6px 8px 18px;">
+            <div style="width: 24px; height: 24px; border-radius: 6px; background: oklch(48.8% .243 264.376); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600;">S</div>
+            <div style="font-size: 14px; font-weight: 600;">SnapLedger</div>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 2px;">
+            <div style="height: 34px; border-radius: 8px; padding: 0 10px; display: flex; align-items: center; gap: 10px; font-size: 14px; color: rgba(255,255,255,0.7);">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5 12 3l9 6.5V21H3z"></path></svg>
+              <span>Home</span>
+            </div>
+            <div style="height: 34px; border-radius: 8px; padding: 0 10px; display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.07); font-size: 14px; font-weight: 500;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>
+              <span style="flex: 1;">Review</span>
+              <span style="font-family: 'Geist Mono', monospace; font-size: 11px; padding: 2px 7px; border-radius: 999px; background: oklch(48.8% .243 264.376); color: #fff;">3</span>
+            </div>
+            <div style="height: 34px; border-radius: 8px; padding: 0 10px; display: flex; align-items: center; gap: 10px; font-size: 14px; color: rgba(255,255,255,0.7);">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path><path d="M14 2v5h5"></path></svg>
+              <span>Receipts</span>
+            </div>
+            <div style="height: 34px; border-radius: 8px; padding: 0 10px; display: flex; align-items: center; gap: 10px; font-size: 14px; color: rgba(255,255,255,0.7);">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"></rect><path d="M2 10h20"></path></svg>
+              <span style="flex: 1;">Transactions</span>
+              <span style="font-family: 'Geist Mono', monospace; font-size: 11px; color: oklch(82.8% .189 84.429);">17</span>
+            </div>
+            <div style="height: 34px; border-radius: 8px; padding: 0 10px; display: flex; align-items: center; gap: 10px; font-size: 14px; color: rgba(255,255,255,0.7);">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg>
+              <span>Clients</span>
+            </div>
+            <div style="height: 34px; border-radius: 8px; padding: 0 10px; display: flex; align-items: center; gap: 10px; font-size: 14px; color: rgba(255,255,255,0.7);">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06A1.65 1.65 0 0 0 15 19.4a1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6 1.65 1.65 0 0 0 10 3.09V3a2 2 0 1 1 4 0v.09A1.65 1.65 0 0 0 15 4.6a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9c.14.35.44.62.79.73"></path></svg>
+              <span>Settings</span>
+            </div>
+          </div>
+          <div style="margin-top: auto; border-top: 1px solid rgba(255,255,255,0.10); padding: 12px 8px 4px; display: flex; align-items: center; gap: 10px;">
+            <div style="width: 28px; height: 28px; border-radius: 999px; background: rgba(255,255,255,0.10); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 500;">PR</div>
+            <div style="display: flex; flex-direction: column; gap: 1px; min-width: 0;">
+              <div style="font-size: 13px; font-weight: 500;">Priya Raman</div>
+              <div style="font-size: 11px; color: rgba(255,255,255,0.5); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">priya@ramandesign.co.uk</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="flex: 1; min-width: 0; display: flex; flex-direction: column;">
+          <div style="height: 56px; flex-shrink: 0; box-sizing: border-box; border-bottom: 1px solid rgba(255,255,255,0.10); padding: 0 24px; display: flex; align-items: center; justify-content: space-between; gap: 16px;">
+            <div style="display: flex; align-items: baseline; gap: 12px;">
+              <div style="font-size: 16px; font-weight: 600;">Review</div>
+              <div style="font-size: 13px; color: rgba(255,255,255,0.5);">3 items · about 90 seconds</div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <div style="height: 34px; box-sizing: border-box; border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; padding: 0 14px; display: flex; align-items: center; font-size: 13px; color: rgba(255,255,255,0.85);">Approve All 3</div>
+            </div>
+          </div>
+
+          <div style="flex: 1; min-height: 0; display: flex;">
+
+            <div style="width: 360px; flex-shrink: 0; box-sizing: border-box; border-right: 1px solid rgba(255,255,255,0.10); overflow-y: auto; scrollbar-width: none; display: flex; flex-direction: column;">
+              <div style="padding: 14px 18px 10px; font-size: 12px; font-weight: 500; color: rgba(255,255,255,0.55); text-transform: uppercase; letter-spacing: 0.06em;">Waiting on you</div>
+              <div style="padding: 14px 18px; border-left: 2px solid oklch(48.8% .243 264.376); background: rgba(255,255,255,0.06); display: flex; flex-direction: column; gap: 8px;">
+                <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px;">
+                  <div style="font-size: 14px; font-weight: 600;">Premier Inn</div>
+                  <div style="font-family: 'Geist Mono', monospace; font-size: 14px;">£89.00</div>
+                </div>
+                <div style="font-size: 12px; color: rgba(255,255,255,0.55);">Northampton · 7 Jul · Accommodation</div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <div style="font-size: 11px; font-weight: 500; color: oklch(79.2% .209 151.711); background: color-mix(in srgb, oklch(72.3% .219 149.579) 15%, transparent); border-radius: 999px; padding: 3px 9px;">96%</div>
+                  <div style="font-size: 12px; color: oklch(82.8% .189 84.429);">Rebill unconfirmed</div>
+                </div>
+              </div>
+              <div style="padding: 14px 18px; border-left: 2px solid transparent; border-top: 1px solid rgba(255,255,255,0.08); display: flex; flex-direction: column; gap: 8px;">
+                <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px;">
+                  <div style="font-size: 14px; font-weight: 500;">Adobe</div>
+                  <div style="font-family: 'Geist Mono', monospace; font-size: 14px; color: rgba(255,255,255,0.8);">£51.98</div>
+                </div>
+                <div style="font-size: 12px; color: rgba(255,255,255,0.55);">Personal card · 9 Jul · Software</div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <div style="font-size: 11px; font-weight: 500; color: oklch(87.9% .169 91.605); background: color-mix(in srgb, oklch(76.9% .188 70.08) 15%, transparent); border-radius: 999px; padding: 3px 9px;">74%</div>
+                  <div style="font-size: 12px; color: rgba(255,255,255,0.55);">No matching payment</div>
+                </div>
+              </div>
+              <div style="padding: 14px 18px; border-left: 2px solid transparent; border-top: 1px solid rgba(255,255,255,0.08); display: flex; flex-direction: column; gap: 8px;">
+                <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px;">
+                  <div style="font-size: 14px; font-weight: 500;">Tesco Express</div>
+                  <div style="font-family: 'Geist Mono', monospace; font-size: 14px; color: rgba(255,255,255,0.8);">£34.10</div>
+                </div>
+                <div style="font-size: 12px; color: rgba(255,255,255,0.55);">Bristol · 11 Jul · Subsistence</div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <div style="font-size: 11px; font-weight: 500; color: oklch(87.9% .169 91.605); background: color-mix(in srgb, oklch(76.9% .188 70.08) 15%, transparent); border-radius: 999px; padding: 3px 9px;">62%</div>
+                  <div style="font-size: 12px; color: rgba(255,255,255,0.55);">Business or personal</div>
+                </div>
+              </div>
+              <div style="margin-top: auto; padding: 14px 18px; border-top: 1px solid rgba(255,255,255,0.10); font-size: 12px; color: rgba(255,255,255,0.45);">11 more filed without you this week</div>
+            </div>
+
+            <div style="flex: 1; min-width: 0; display: flex; flex-direction: column;">
+              <div style="flex: 1; min-height: 0; overflow-y: auto; scrollbar-width: none; padding: 24px; display: flex; flex-direction: column; gap: 16px;">
+
+                <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 20px;">
+                  <div style="display: flex; flex-direction: column; gap: 6px;">
+                    <div style="font-size: 22px; font-weight: 600; letter-spacing: -0.02em;">Premier Inn</div>
+                    <div style="font-size: 13px; color: rgba(255,255,255,0.55);">Northampton · 7 Jul · folio emailed 8 Jul</div>
+                  </div>
+                  <div style="display: flex; align-items: center; gap: 12px;">
+                    <div style="font-size: 12px; font-weight: 500; color: oklch(79.2% .209 151.711); background: color-mix(in srgb, oklch(72.3% .219 149.579) 15%, transparent); border-radius: 999px; padding: 5px 11px;">High confidence · 96%</div>
+                    <div style="font-family: 'Geist Mono', monospace; font-size: 24px; font-weight: 500;">£89.00</div>
+                  </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 248px minmax(0, 1fr); gap: 20px; align-items: start; flex-shrink: 0;">
+
+                  <div style="background: oklch(21.8% .008 223.9); border: 1px solid rgba(255,255,255,0.10); border-radius: 10px; overflow: hidden; flex-shrink: 0;">
+                    <div style="height: 268px; background: rgba(255,255,255,0.04); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;">
+                      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path><path d="M14 2v5h5"></path></svg>
+                      <div style="font-size: 12px; color: rgba(255,255,255,0.45);">Folio_NTH_07072026.pdf</div>
+                    </div>
+                    <div style="padding: 12px 14px; border-top: 1px solid rgba(255,255,255,0.10); display: flex; align-items: center; justify-content: space-between; gap: 12px;">
+                      <div style="font-size: 12px; color: rgba(255,255,255,0.55);">From noreply@premierinn.com</div>
+                      <div style="font-size: 12px; color: oklch(78.5% .115 274.713);">Open</div>
+                    </div>
+                  </div>
+
+                  <div style="display: flex; flex-direction: column; gap: 20px;">
+
+                    <div style="background: oklch(21.8% .008 223.9); border: 1px solid rgba(255,255,255,0.10); border-radius: 10px; overflow: hidden; flex-shrink: 0;">
+                      <div style="display: grid; grid-template-columns: 108px minmax(0, 1fr) 68px; gap: 12px; padding: 11px 16px; min-height: 44px; box-sizing: border-box; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08);">
+                        <div style="font-size: 13px; color: rgba(255,255,255,0.55);">Category</div>
+                        <div style="font-size: 14px; font-weight: 500;">Accommodation</div>
+                        <div style="font-size: 12px; color: oklch(78.5% .115 274.713); text-align: right;">Change</div>
+                      </div>
+                      <div style="display: grid; grid-template-columns: 108px minmax(0, 1fr) 68px; gap: 12px; padding: 11px 16px; min-height: 44px; box-sizing: border-box; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08);">
+                        <div style="font-size: 13px; color: rgba(255,255,255,0.55);">Matched to</div>
+                        <div style="font-family: 'Geist Mono', monospace; font-size: 13px;">BARCLAYS · 08 JUL · £89.00</div>
+                        <div style="font-size: 12px; color: oklch(78.5% .115 274.713); text-align: right;">Change</div>
+                      </div>
+                      <div style="display: grid; grid-template-columns: 108px minmax(0, 1fr) 68px; gap: 12px; padding: 11px 16px; min-height: 44px; box-sizing: border-box; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08);">
+                        <div style="font-size: 13px; color: rgba(255,255,255,0.55);">Rebillable to</div>
+                        <div style="font-size: 14px; font-weight: 500; color: oklch(82.8% .189 84.429);">Northgate Logistics — needs confirming</div>
+                        <div style="font-size: 12px; color: oklch(78.5% .115 274.713); text-align: right;">Change</div>
+                      </div>
+                      <div style="display: grid; grid-template-columns: 108px minmax(0, 1fr) 68px; gap: 12px; padding: 11px 16px; min-height: 44px; box-sizing: border-box; align-items: center;">
+                        <div style="font-size: 13px; color: rgba(255,255,255,0.55);">VAT</div>
+                        <div style="font-family: 'Geist Mono', monospace; font-size: 13px;">£14.83 at 20%</div>
+                        <div style="font-size: 12px; color: oklch(78.5% .115 274.713); text-align: right;">Change</div>
+                      </div>
+                    </div>
+
+                    <div style="background: oklch(21.8% .008 223.9); border: 1px solid rgba(255,255,255,0.10); border-radius: 10px; padding: 14px; display: flex; flex-direction: column; gap: 11px; flex-shrink: 0;">
+                      <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px;">
+                        <div style="font-size: 13px; font-weight: 600;">Why this match</div>
+                        <div style="font-family: 'Geist Mono', monospace; font-size: 12px; color: oklch(79.2% .209 151.711);">96% confidence</div>
+                      </div>
+                      <div style="display: flex; gap: 12px; align-items: flex-start;">
+                        <div style="width: 6px; height: 6px; border-radius: 999px; background: oklch(79.2% .209 151.711); margin-top: 7px; flex-shrink: 0;"></div>
+                        <div style="font-size: 13px; line-height: 1.55; color: rgba(255,255,255,0.8);">Folio total <span style="font-family: 'Geist Mono', monospace;">£89.00</span> is an exact amount match to a Barclays card transaction on the same day.</div>
+                      </div>
+                      <div style="display: flex; gap: 12px; align-items: flex-start;">
+                        <div style="width: 6px; height: 6px; border-radius: 999px; background: oklch(79.2% .209 151.711); margin-top: 7px; flex-shrink: 0;"></div>
+                        <div style="font-size: 13px; line-height: 1.55; color: rgba(255,255,255,0.8);">You have categorised 14 previous Premier Inn folios as Accommodation.</div>
+                      </div>
+                      <div style="display: flex; gap: 12px; align-items: flex-start;">
+                        <div style="width: 6px; height: 6px; border-radius: 999px; background: oklch(82.8% .189 84.429); margin-top: 7px; flex-shrink: 0;"></div>
+                        <div style="font-size: 13px; line-height: 1.55; color: rgba(255,255,255,0.8);">The stay dates fall inside the Northgate Logistics engagement and the hotel is 4 miles from the client site, so it is flagged rebillable. Not yet confirmed by you.</div>
+                      </div>
+                    </div>
+
+                    <div style="background: oklch(21.8% .008 223.9); border: 1px solid rgba(255,255,255,0.10); border-radius: 10px; padding: 14px; display: flex; flex-direction: column; gap: 10px; flex-shrink: 0;">
+                      <div style="font-size: 13px; font-weight: 600;">Audit trail</div>
+                      <div style="display: flex; flex-direction: column; gap: 8px; font-family: 'Geist Mono', monospace; font-size: 11.5px; color: rgba(255,255,255,0.6); line-height: 1.45;">
+                        <div>08 JUL 07:14 · email received · noreply@premierinn.com</div>
+                        <div>08 JUL 07:15 · parsed · confidence 0.98</div>
+                        <div>08 JUL 09:02 · matched · barclays_tx_88412 · accommodation</div>
+                        <div>— · awaiting approval · priya@ramandesign.co.uk</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div style="height: 72px; flex-shrink: 0; box-sizing: border-box; border-top: 1px solid rgba(255,255,255,0.10); padding: 0 24px; display: flex; align-items: center; justify-content: space-between; gap: 16px;">
+                <div style="font-size: 13px; color: rgba(255,255,255,0.5);">Item 1 of 3 · nothing reaches FreeAgent until you approve</div>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                  <div style="height: 40px; box-sizing: border-box; border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; padding: 0 18px; display: flex; align-items: center; font-size: 14px; font-weight: 500; color: rgba(255,255,255,0.85);">Not Rebillable</div>
+                  <div style="height: 40px; box-sizing: border-box; border-radius: 8px; padding: 0 22px; display: flex; align-items: center; background: oklch(48.8% .243 264.376); font-size: 14px; font-weight: 500;">Approve</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </x-import>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 22px;">
+    <div style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: oklch(78.5% .115 274.713); border-left: 3px solid oklch(58.5% .233 277.117); padding-left: 10px;">W3 · Review — business or personal</div>
+    <div style="font-size: 13px; line-height: 1.5; color: rgba(255,255,255,0.6); max-width: 720px;">Same shell, third item selected. The one judgement call the product will not make for you, with the calendar evidence sitting next to it.</div>
+  </div>
+
+  <div style="margin-bottom: 72px;">
+    <x-import component-from-global-scope="ChromeWindow" from="./browser-window.jsx" width="{{ 1400 }}" height="{{ 880 }}" url="app.snapledger.co.uk/review/3" tabs="{{ tabsReview }}" hint-size="1400px,880px">
+      <div data-screen-label="W3 Business or personal" style="height: 100%; display: flex; background: oklch(14.8% .004 228.8); color: oklch(98.7% .002 197.1); font-family: 'Geist', system-ui, sans-serif;">
+
+        <div style="width: 240px; flex-shrink: 0; box-sizing: border-box; border-right: 1px solid rgba(255,255,255,0.10); background: oklch(17.5% .005 226); display: flex; flex-direction: column; padding: 14px 12px;">
+          <div style="display: flex; align-items: center; gap: 10px; padding: 6px 8px 18px;">
+            <div style="width: 24px; height: 24px; border-radius: 6px; background: oklch(48.8% .243 264.376); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600;">S</div>
+            <div style="font-size: 14px; font-weight: 600;">SnapLedger</div>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 2px;">
+            <div style="height: 34px; border-radius: 8px; padding: 0 10px; display: flex; align-items: center; gap: 10px; font-size: 14px; color: rgba(255,255,255,0.7);">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5 12 3l9 6.5V21H3z"></path></svg>
+              <span>Home</span>
+            </div>
+            <div style="height: 34px; border-radius: 8px; padding: 0 10px; display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.07); font-size: 14px; font-weight: 500;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>
+              <span style="flex: 1;">Review</span>
+              <span style="font-family: 'Geist Mono', monospace; font-size: 11px; padding: 2px 7px; border-radius: 999px; background: oklch(48.8% .243 264.376); color: #fff;">1</span>
+            </div>
+            <div style="height: 34px; border-radius: 8px; padding: 0 10px; display: flex; align-items: center; gap: 10px; font-size: 14px; color: rgba(255,255,255,0.7);">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path><path d="M14 2v5h5"></path></svg>
+              <span>Receipts</span>
+            </div>
+            <div style="height: 34px; border-radius: 8px; padding: 0 10px; display: flex; align-items: center; gap: 10px; font-size: 14px; color: rgba(255,255,255,0.7);">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"></rect><path d="M2 10h20"></path></svg>
+              <span style="flex: 1;">Transactions</span>
+              <span style="font-family: 'Geist Mono', monospace; font-size: 11px; color: oklch(82.8% .189 84.429);">17</span>
+            </div>
+            <div style="height: 34px; border-radius: 8px; padding: 0 10px; display: flex; align-items: center; gap: 10px; font-size: 14px; color: rgba(255,255,255,0.7);">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg>
+              <span>Clients</span>
+            </div>
+            <div style="height: 34px; border-radius: 8px; padding: 0 10px; display: flex; align-items: center; gap: 10px; font-size: 14px; color: rgba(255,255,255,0.7);">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06A1.65 1.65 0 0 0 15 19.4a1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6 1.65 1.65 0 0 0 10 3.09V3a2 2 0 1 1 4 0v.09A1.65 1.65 0 0 0 15 4.6a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9c.14.35.44.62.79.73"></path></svg>
+              <span>Settings</span>
+            </div>
+          </div>
+          <div style="margin-top: auto; border-top: 1px solid rgba(255,255,255,0.10); padding: 12px 8px 4px; display: flex; align-items: center; gap: 10px;">
+            <div style="width: 28px; height: 28px; border-radius: 999px; background: rgba(255,255,255,0.10); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 500;">PR</div>
+            <div style="display: flex; flex-direction: column; gap: 1px; min-width: 0;">
+              <div style="font-size: 13px; font-weight: 500;">Priya Raman</div>
+              <div style="font-size: 11px; color: rgba(255,255,255,0.5); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">priya@ramandesign.co.uk</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="flex: 1; min-width: 0; display: flex; flex-direction: column;">
+          <div style="height: 56px; flex-shrink: 0; box-sizing: border-box; border-bottom: 1px solid rgba(255,255,255,0.10); padding: 0 24px; display: flex; align-items: center; justify-content: space-between; gap: 16px;">
+            <div style="display: flex; align-items: baseline; gap: 12px;">
+              <div style="font-size: 16px; font-weight: 600;">Review</div>
+              <div style="font-size: 13px; color: rgba(255,255,255,0.5);">1 item left</div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <div style="height: 34px; box-sizing: border-box; border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; padding: 0 14px; display: flex; align-items: center; font-size: 13px; color: rgba(255,255,255,0.85);">Ask Me Later</div>
+            </div>
+          </div>
+
+          <div style="flex: 1; min-height: 0; display: flex;">
+
+            <div style="width: 360px; flex-shrink: 0; box-sizing: border-box; border-right: 1px solid rgba(255,255,255,0.10); overflow-y: auto; scrollbar-width: none; display: flex; flex-direction: column;">
+              <div style="padding: 14px 18px 10px; font-size: 12px; font-weight: 500; color: rgba(255,255,255,0.55); text-transform: uppercase; letter-spacing: 0.06em;">Waiting on you</div>
+              <div style="padding: 14px 18px; border-left: 2px solid transparent; display: flex; flex-direction: column; gap: 8px; opacity: 0.5;">
+                <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px;">
+                  <div style="font-size: 14px; font-weight: 500; text-decoration: line-through;">Premier Inn</div>
+                  <div style="font-family: 'Geist Mono', monospace; font-size: 14px;">£89.00</div>
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="oklch(79.2% .209 151.711)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>
+                  <div style="font-size: 12px; color: rgba(255,255,255,0.6);">Approved · rebilled to Northgate</div>
+                </div>
+              </div>
+              <div style="padding: 14px 18px; border-left: 2px solid transparent; border-top: 1px solid rgba(255,255,255,0.08); display: flex; flex-direction: column; gap: 8px; opacity: 0.5;">
+                <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px;">
+                  <div style="font-size: 14px; font-weight: 500; text-decoration: line-through;">Adobe</div>
+                  <div style="font-family: 'Geist Mono', monospace; font-size: 14px;">£51.98</div>
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="oklch(79.2% .209 151.711)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>
+                  <div style="font-size: 12px; color: rgba(255,255,255,0.6);">Approved · personal card</div>
+                </div>
+              </div>
+              <div style="padding: 14px 18px; border-left: 2px solid oklch(48.8% .243 264.376); background: rgba(255,255,255,0.06); border-top: 1px solid rgba(255,255,255,0.08); display: flex; flex-direction: column; gap: 8px;">
+                <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px;">
+                  <div style="font-size: 14px; font-weight: 600;">Tesco Express</div>
+                  <div style="font-family: 'Geist Mono', monospace; font-size: 14px;">£34.10</div>
+                </div>
+                <div style="font-size: 12px; color: rgba(255,255,255,0.55);">Bristol · 11 Jul · Subsistence</div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <div style="font-size: 11px; font-weight: 500; color: oklch(87.9% .169 91.605); background: color-mix(in srgb, oklch(76.9% .188 70.08) 15%, transparent); border-radius: 999px; padding: 3px 9px;">62%</div>
+                  <div style="font-size: 12px; color: oklch(87.9% .169 91.605);">Needs your call</div>
+                </div>
+              </div>
+              <div style="margin-top: auto; padding: 14px 18px; border-top: 1px solid rgba(255,255,255,0.10); font-size: 12px; color: rgba(255,255,255,0.45);">2 approved just now · undo</div>
+            </div>
+
+            <div style="flex: 1; min-width: 0; display: flex; flex-direction: column;">
+              <div style="flex: 1; min-height: 0; overflow-y: auto; scrollbar-width: none; padding: 24px; display: flex; flex-direction: column; gap: 16px;">
+
+                <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 20px;">
+                  <div style="display: flex; flex-direction: column; gap: 8px;">
+                    <div style="font-size: 11px; font-weight: 500; color: oklch(87.9% .169 91.605); background: color-mix(in srgb, oklch(76.9% .188 70.08) 15%, transparent); border-radius: 999px; padding: 5px 10px; align-self: flex-start;">Needs your call</div>
+                    <div style="font-size: 22px; font-weight: 600; letter-spacing: -0.02em;">Tesco Express</div>
+                    <div style="font-size: 13px; color: rgba(255,255,255,0.55);">Bristol · Saturday 11 Jul, 08:42 · card payment, no receipt emailed</div>
+                  </div>
+                  <div style="font-family: 'Geist Mono', monospace; font-size: 24px; font-weight: 500;">£34.10</div>
+                </div>
+
+                <div style="background: oklch(21.8% .008 223.9); border: 1px solid rgba(255,255,255,0.10); border-radius: 10px; padding: 20px; display: flex; flex-direction: column; gap: 18px; flex-shrink: 0;">
+                  <div style="font-size: 18px; font-weight: 600; letter-spacing: -0.01em;">Business or personal?</div>
+
+                  <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px;">
+                    <div style="border: 1px solid rgba(255,255,255,0.10); border-radius: 8px; padding: 16px; background: rgba(255,255,255,0.03); display: flex; flex-direction: column; gap: 10px;">
+                      <div style="font-size: 12px; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 0.06em;">What we know</div>
+                      <div style="font-size: 13px; line-height: 1.6; color: rgba(255,255,255,0.75);">Your calendar has "Hartley Wedding — Clifton" from 09:00 to 22:00 that day, 1.2 miles away. Similar Saturday supermarket spends on shoot days were claimed as subsistence last year.</div>
+                    </div>
+                    <div style="border: 1px solid rgba(255,255,255,0.10); border-radius: 8px; padding: 16px; background: rgba(255,255,255,0.03); display: flex; flex-direction: column; gap: 10px;">
+                      <div style="font-size: 12px; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 0.06em;">Why we are asking</div>
+                      <div style="font-size: 13px; line-height: 1.6; color: rgba(255,255,255,0.75);">Confidence is 62%, below your 80% line, so it was held back rather than filed. Tesco is the one merchant where your history splits roughly evenly between business and personal.</div>
+                    </div>
+                  </div>
+
+                  <div style="height: 1px; background: rgba(255,255,255,0.10);"></div>
+
+                  <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px;">
+                    <div style="display: flex; flex-direction: column; gap: 3px;">
+                      <div style="font-size: 14px; font-weight: 500;">Always ask me for Tesco</div>
+                      <div style="font-size: 12px; color: rgba(255,255,255,0.55);">Otherwise we will learn from this answer and stop asking.</div>
+                    </div>
+                    <div style="width: 40px; height: 24px; flex-shrink: 0; border-radius: 999px; background: rgba(255,255,255,0.15); display: flex; align-items: center; padding: 2px; box-sizing: border-box;">
+                      <div style="width: 20px; height: 20px; border-radius: 999px; background: rgba(255,255,255,0.9);"></div>
+                    </div>
+                  </div>
+                </div>
+
+                <div style="background: oklch(21.8% .008 223.9); border: 1px solid rgba(255,255,255,0.10); border-radius: 10px; padding: 16px; display: flex; flex-direction: column; gap: 12px; flex-shrink: 0;">
+                  <div style="font-size: 13px; font-weight: 600;">Audit trail</div>
+                  <div style="display: flex; flex-direction: column; gap: 9px; font-family: 'Geist Mono', monospace; font-size: 12px; color: rgba(255,255,255,0.6); line-height: 1.5;">
+                    <div>11 JUL 08:42 · transaction seen · natwest_tx_51203</div>
+                    <div>11 JUL 09:10 · no receipt found in email</div>
+                    <div>11 JUL 09:10 · calendar checked · hartley_wedding_clifton</div>
+                    <div>11 JUL 09:10 · confidence 0.62 · held for review</div>
+                    <div>— · awaiting decision · priya@ramandesign.co.uk</div>
+                  </div>
+                </div>
+              </div>
+
+              <div style="height: 72px; flex-shrink: 0; box-sizing: border-box; border-top: 1px solid rgba(255,255,255,0.10); padding: 0 24px; display: flex; align-items: center; justify-content: space-between; gap: 16px;">
+                <div style="font-size: 13px; color: rgba(255,255,255,0.5);">Item 3 of 3 · last one</div>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                  <div style="height: 40px; box-sizing: border-box; border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; padding: 0 22px; display: flex; align-items: center; font-size: 14px; font-weight: 500; color: rgba(255,255,255,0.85);">Personal</div>
+                  <div style="height: 40px; box-sizing: border-box; border-radius: 8px; padding: 0 22px; display: flex; align-items: center; background: oklch(48.8% .243 264.376); font-size: 14px; font-weight: 500;">Business</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </x-import>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 22px;">
+    <div style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: oklch(82.8% .111 230.318); border-left: 3px solid oklch(68.5% .169 237.323); padding-left: 10px;">W4 · Setup</div>
+    <div style="font-size: 13px; line-height: 1.5; color: rgba(255,255,255,0.6); max-width: 720px;">Mobile screens 01 and 02 on one page. Connecting and being shown the 90-day proof is a sit-down job, so this is the flow that genuinely belongs on the laptop.</div>
+  </div>
+
+  <div style="margin-bottom: 72px;">
+    <x-import component-from-global-scope="ChromeWindow" from="./browser-window.jsx" width="{{ 1400 }}" height="{{ 880 }}" url="app.snapledger.co.uk/setup" tabs="{{ tabsSetup }}" hint-size="1400px,880px">
+      <div data-screen-label="W4 Setup" style="height: 100%; display: flex; flex-direction: column; background: oklch(14.8% .004 228.8); color: oklch(98.7% .002 197.1); font-family: 'Geist', system-ui, sans-serif;">
+
+        <div style="height: 56px; flex-shrink: 0; box-sizing: border-box; border-bottom: 1px solid rgba(255,255,255,0.10); padding: 0 24px; display: flex; align-items: center; justify-content: space-between; gap: 16px;">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <div style="width: 24px; height: 24px; border-radius: 6px; background: oklch(48.8% .243 264.376); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600;">S</div>
+            <div style="font-size: 14px; font-weight: 600;">SnapLedger</div>
+          </div>
+          <div style="font-size: 13px; color: rgba(255,255,255,0.5);">Setting up for priya@ramandesign.co.uk</div>
+        </div>
+
+        <div style="flex: 1; min-height: 0; overflow-y: auto; scrollbar-width: none; padding: 24px 24px 28px; display: flex; justify-content: center;">
+          <div style="width: 100%; max-width: 880px; display: flex; flex-direction: column; gap: 20px;">
+
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+              <div style="font-size: 28px; font-weight: 600; letter-spacing: -0.02em;">Three connections, then it runs itself</div>
+              <div style="font-size: 14px; line-height: 1.6; color: rgba(255,255,255,0.6);">Read-only access to your inbox and bank feed. SnapLedger never moves money and nothing reaches FreeAgent until you approve it.</div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; flex-shrink: 0;">
+              <div style="background: oklch(21.8% .008 223.9); border: 1px solid rgba(255,255,255,0.10); border-radius: 10px; padding: 14px; display: flex; align-items: center; gap: 12px;">
+                <div style="width: 34px; height: 34px; flex-shrink: 0; border-radius: 8px; background: rgba(255,255,255,0.06); display: flex; align-items: center; justify-content: center;">
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.75)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="m22 7-10 6L2 7"></path></svg>
+                </div>
+                <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px;">
+                  <div style="font-size: 14px; font-weight: 600;">Gmail</div>
+                  <div style="font-size: 12px; color: rgba(255,255,255,0.55); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">priya@ramandesign.co.uk</div>
+                </div>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="oklch(79.2% .209 151.711)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;"><path d="M20 6 9 17l-5-5"></path></svg>
+              </div>
+              <div style="background: oklch(21.8% .008 223.9); border: 1px solid rgba(255,255,255,0.10); border-radius: 10px; padding: 14px; display: flex; align-items: center; gap: 12px;">
+                <div style="width: 34px; height: 34px; flex-shrink: 0; border-radius: 8px; background: rgba(255,255,255,0.06); display: flex; align-items: center; justify-content: center;">
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.75)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"></rect><path d="M2 10h20"></path></svg>
+                </div>
+                <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px;">
+                  <div style="font-size: 14px; font-weight: 600;">Starling</div>
+                  <div style="font-size: 12px; color: rgba(255,255,255,0.55); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Business account · via FreeAgent</div>
+                </div>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="oklch(79.2% .209 151.711)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;"><path d="M20 6 9 17l-5-5"></path></svg>
+              </div>
+              <div style="background: oklch(21.8% .008 223.9); border: 1px solid rgba(255,255,255,0.10); border-radius: 10px; padding: 14px; display: flex; align-items: center; gap: 12px;">
+                <div style="width: 34px; height: 34px; flex-shrink: 0; border-radius: 8px; background: rgba(255,255,255,0.06); display: flex; align-items: center; justify-content: center;">
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.75)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg>
+                </div>
+                <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px;">
+                  <div style="font-size: 14px; font-weight: 600;">FreeAgent</div>
+                  <div style="font-size: 12px; color: rgba(255,255,255,0.55); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Raman Design Ltd</div>
+                </div>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="oklch(79.2% .209 151.711)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;"><path d="M20 6 9 17l-5-5"></path></svg>
+              </div>
+            </div>
+
+            <div style="background: oklch(21.8% .008 223.9); border: 1px solid rgba(255,255,255,0.10); border-radius: 10px; padding: 20px; display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; flex-shrink: 0;">
+              <div style="display: flex; flex-direction: column; gap: 6px; max-width: 420px;">
+                <div style="font-size: 14px; font-weight: 600;">Anything on a personal card?</div>
+                <div style="font-size: 13px; line-height: 1.55; color: rgba(255,255,255,0.6);">Tell us once. These never appear in your business feed, so nothing else will ever chase them.</div>
+              </div>
+              <div style="display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end;">
+                <div style="font-size: 13px; padding: 7px 14px; border-radius: 999px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.10);">Grammarly</div>
+                <div style="font-size: 13px; padding: 7px 14px; border-radius: 999px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.10);">Canva</div>
+                <div style="font-size: 13px; padding: 7px 14px; border-radius: 999px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.10);">Squarespace</div>
+                <div style="font-size: 13px; padding: 7px 14px; border-radius: 999px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.10);">Adobe</div>
+                <div style="font-size: 13px; padding: 7px 14px; border-radius: 999px; background: transparent; border: 1px dashed rgba(255,255,255,0.25); color: rgba(255,255,255,0.6);">Add another</div>
+              </div>
+            </div>
+
+            <div style="height: 1px; background: rgba(255,255,255,0.10);"></div>
+
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+              <div style="font-size: 20px; font-weight: 600; letter-spacing: -0.02em;">Here's what was already there</div>
+              <div style="font-size: 14px; line-height: 1.6; color: rgba(255,255,255,0.6);">Your last 90 days, read from your inbox and matched against your bank feed. Nothing has been filed yet.</div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 288px minmax(0, 1fr) 216px; gap: 14px; align-items: stretch; flex-shrink: 0;">
+
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                <div style="background: oklch(21.8% .008 223.9); border: 1px solid rgba(255,255,255,0.10); border-radius: 10px; padding: 14px; display: flex; flex-direction: column; gap: 4px;">
+                  <div style="font-family: 'Geist Mono', monospace; font-size: 24px; font-weight: 500;">63</div>
+                  <div style="font-size: 12px; line-height: 1.4; color: rgba(255,255,255,0.6);">Receipts found in email</div>
+                </div>
+                <div style="background: oklch(21.8% .008 223.9); border: 1px solid rgba(255,255,255,0.10); border-radius: 10px; padding: 14px; display: flex; flex-direction: column; gap: 4px;">
+                  <div style="font-family: 'Geist Mono', monospace; font-size: 24px; font-weight: 500; color: oklch(79.2% .209 151.711);">54</div>
+                  <div style="font-size: 12px; line-height: 1.4; color: rgba(255,255,255,0.6);">Matched to a transaction</div>
+                </div>
+                <div style="background: oklch(21.8% .008 223.9); border: 1px solid rgba(255,255,255,0.10); border-radius: 10px; padding: 14px; display: flex; flex-direction: column; gap: 4px;">
+                  <div style="font-family: 'Geist Mono', monospace; font-size: 24px; font-weight: 500; color: oklch(82.8% .189 84.429);">9</div>
+                  <div style="font-size: 12px; line-height: 1.4; color: rgba(255,255,255,0.6);">Need a decision from you</div>
+                </div>
+                <div style="background: oklch(21.8% .008 223.9); border: 1px solid rgba(255,255,255,0.10); border-radius: 10px; padding: 14px; display: flex; flex-direction: column; gap: 4px;">
+                  <div style="font-family: 'Geist Mono', monospace; font-size: 24px; font-weight: 500;">17</div>
+                  <div style="font-size: 12px; line-height: 1.4; color: rgba(255,255,255,0.6);">Transactions unevidenced</div>
+                </div>
+              </div>
+
+              <div style="background: oklch(21.8% .008 223.9); border: 1px solid rgba(255,255,255,0.10); border-radius: 10px; overflow: hidden; flex-shrink: 0;">
+                <div style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.10); font-size: 13px; font-weight: 600;">Compared against what you filed yourself</div>
+                <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 0 16px; height: 44px; border-bottom: 1px solid rgba(255,255,255,0.08);">
+                  <div style="font-size: 13px; color: rgba(255,255,255,0.7);">Agreed with your entry</div>
+                  <div style="font-family: 'Geist Mono', monospace; font-size: 13px;">51</div>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 0 16px; height: 44px; border-bottom: 1px solid rgba(255,255,255,0.08);">
+                  <div style="font-size: 13px; color: rgba(255,255,255,0.7);">Different category suggested</div>
+                  <div style="font-family: 'Geist Mono', monospace; font-size: 13px;">3</div>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 0 16px; height: 44px;">
+                  <div style="font-size: 13px; color: rgba(255,255,255,0.7);">Receipt you had not attached</div>
+                  <div style="font-family: 'Geist Mono', monospace; font-size: 13px; color: oklch(79.2% .209 151.711);">12</div>
+                </div>
+              </div>
+
+              <div style="border: 1px solid rgba(255,255,255,0.10); border-radius: 10px; padding: 16px; display: flex; flex-direction: column; gap: 6px; background: color-mix(in srgb, oklch(72.3% .219 149.579) 8%, oklch(21.8% .008 223.9));">
+                <div style="font-size: 13px; line-height: 1.4; color: rgba(255,255,255,0.7);">Expenses you had not claimed</div>
+                <div style="font-family: 'Geist Mono', monospace; font-size: 28px; font-weight: 500; color: oklch(79.2% .209 151.711);">£218.40</div>
+                <div style="font-size: 12px; line-height: 1.5; color: rgba(255,255,255,0.6);">Mostly parking, subsistence and two software renewals with no receipt attached.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="height: 72px; flex-shrink: 0; box-sizing: border-box; border-top: 1px solid rgba(255,255,255,0.10); padding: 0 24px; display: flex; align-items: center; justify-content: center; gap: 16px;">
+          <div style="width: 100%; max-width: 880px; display: flex; align-items: center; justify-content: space-between; gap: 16px;">
+            <div style="font-size: 13px; color: rgba(255,255,255,0.5);">You can change any of this later in Settings.</div>
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <div style="height: 40px; box-sizing: border-box; border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; padding: 0 18px; display: flex; align-items: center; font-size: 14px; font-weight: 500; color: rgba(255,255,255,0.85);">Skip For Now</div>
+              <div style="height: 40px; box-sizing: border-box; border-radius: 8px; padding: 0 22px; display: flex; align-items: center; background: oklch(48.8% .243 264.376); font-size: 14px; font-weight: 500;">Review The 9 Open Items</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </x-import>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 22px;">
+    <div style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: oklch(90.5% .093 164.15); border-left: 3px solid oklch(69.6% .17 162.48); padding-left: 10px;">W5 · Paper — drop it or hand it to the phone</div>
+    <div style="font-size: 13px; line-height: 1.5; color: rgba(255,255,255,0.6); max-width: 720px;">The one screen with no direct mobile twin. A laptop cannot photograph a till receipt well, so the desktop equivalents are a drop zone for PDFs and forwarded email, and a hand-off to the phone for anything physical.</div>
+  </div>
+
+  <div style="margin-bottom: 72px;">
+    <x-import component-from-global-scope="ChromeWindow" from="./browser-window.jsx" width="{{ 1400 }}" height="{{ 880 }}" url="app.snapledger.co.uk/receipts/add" tabs="{{ tabsAdd }}" hint-size="1400px,880px">
+      <div data-screen-label="W5 Add receipt" style="height: 100%; display: flex; background: oklch(14.8% .004 228.8); color: oklch(98.7% .002 197.1); font-family: 'Geist', system-ui, sans-serif;">
+
+        <div style="width: 240px; flex-shrink: 0; box-sizing: border-box; border-right: 1px solid rgba(255,255,255,0.10); background: oklch(17.5% .005 226); display: flex; flex-direction: column; padding: 14px 12px;">
+          <div style="display: flex; align-items: center; gap: 10px; padding: 6px 8px 18px;">
+            <div style="width: 24px; height: 24px; border-radius: 6px; background: oklch(48.8% .243 264.376); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600;">S</div>
+            <div style="font-size: 14px; font-weight: 600;">SnapLedger</div>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 2px;">
+            <div style="height: 34px; border-radius: 8px; padding: 0 10px; display: flex; align-items: center; gap: 10px; font-size: 14px; color: rgba(255,255,255,0.7);">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5 12 3l9 6.5V21H3z"></path></svg>
+              <span>Home</span>
+            </div>
+            <div style="height: 34px; border-radius: 8px; padding: 0 10px; display: flex; align-items: center; gap: 10px; font-size: 14px; color: rgba(255,255,255,0.7);">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>
+              <span style="flex: 1;">Review</span>
+              <span style="font-family: 'Geist Mono', monospace; font-size: 11px; padding: 2px 7px; border-radius: 999px; background: oklch(48.8% .243 264.376); color: #fff;">3</span>
+            </div>
+            <div style="height: 34px; border-radius: 8px; padding: 0 10px; display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.07); font-size: 14px; font-weight: 500;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path><path d="M14 2v5h5"></path></svg>
+              <span>Receipts</span>
+            </div>
+            <div style="height: 34px; border-radius: 8px; padding: 0 10px; display: flex; align-items: center; gap: 10px; font-size: 14px; color: rgba(255,255,255,0.7);">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"></rect><path d="M2 10h20"></path></svg>
+              <span style="flex: 1;">Transactions</span>
+              <span style="font-family: 'Geist Mono', monospace; font-size: 11px; color: oklch(82.8% .189 84.429);">17</span>
+            </div>
+            <div style="height: 34px; border-radius: 8px; padding: 0 10px; display: flex; align-items: center; gap: 10px; font-size: 14px; color: rgba(255,255,255,0.7);">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg>
+              <span>Clients</span>
+            </div>
+            <div style="height: 34px; border-radius: 8px; padding: 0 10px; display: flex; align-items: center; gap: 10px; font-size: 14px; color: rgba(255,255,255,0.7);">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06A1.65 1.65 0 0 0 15 19.4a1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6 1.65 1.65 0 0 0 10 3.09V3a2 2 0 1 1 4 0v.09A1.65 1.65 0 0 0 15 4.6a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9c.14.35.44.62.79.73"></path></svg>
+              <span>Settings</span>
+            </div>
+          </div>
+          <div style="margin-top: auto; border-top: 1px solid rgba(255,255,255,0.10); padding: 12px 8px 4px; display: flex; align-items: center; gap: 10px;">
+            <div style="width: 28px; height: 28px; border-radius: 999px; background: rgba(255,255,255,0.10); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 500;">PR</div>
+            <div style="display: flex; flex-direction: column; gap: 1px; min-width: 0;">
+              <div style="font-size: 13px; font-weight: 500;">Priya Raman</div>
+              <div style="font-size: 11px; color: rgba(255,255,255,0.5); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">priya@ramandesign.co.uk</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="flex: 1; min-width: 0; display: flex; flex-direction: column;">
+          <div style="height: 56px; flex-shrink: 0; box-sizing: border-box; border-bottom: 1px solid rgba(255,255,255,0.10); padding: 0 24px; display: flex; align-items: center; justify-content: space-between; gap: 16px;">
+            <div style="display: flex; align-items: baseline; gap: 12px;">
+              <div style="font-size: 16px; font-weight: 600;">Add a receipt</div>
+              <div style="font-size: 13px; color: rgba(255,255,255,0.5);">Only needed for things that never arrive by email</div>
+            </div>
+          </div>
+
+          <div style="flex: 1; min-height: 0; overflow-y: auto; scrollbar-width: none; padding: 24px; display: flex; flex-direction: column; gap: 16px;">
+
+            <div style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 20px; align-items: stretch; flex-shrink: 0;">
+
+              <div style="border: 1px dashed rgba(255,255,255,0.25); border-radius: 10px; background: rgba(255,255,255,0.03); padding: 40px; flex-shrink: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; min-height: 300px;">
+                <div style="width: 52px; height: 52px; border-radius: 999px; background: rgba(255,255,255,0.06); display: flex; align-items: center; justify-content: center;">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 17V3"></path><path d="m6 9 6-6 6 6"></path><path d="M4 21h16"></path></svg>
+                </div>
+                <div style="font-size: 18px; font-weight: 600; letter-spacing: -0.01em;">Drop receipts here</div>
+                <div style="font-size: 13px; line-height: 1.6; color: rgba(255,255,255,0.6); text-align: center; max-width: 380px; text-wrap: pretty;">PDFs, photos, or a whole folder. We read them, match them to a payment and hold them for your next review. No category to pick.</div>
+                <div style="display: flex; align-items: center; gap: 10px; margin-top: 4px;">
+                  <div style="height: 40px; box-sizing: border-box; border-radius: 8px; padding: 0 18px; display: flex; align-items: center; background: oklch(48.8% .243 264.376); font-size: 14px; font-weight: 500;">Choose Files</div>
+                  <div style="height: 40px; box-sizing: border-box; border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; padding: 0 18px; display: flex; align-items: center; font-size: 14px; font-weight: 500; color: rgba(255,255,255,0.85);">Forward By Email</div>
+                </div>
+                <div style="font-family: 'Geist Mono', monospace; font-size: 12px; color: rgba(255,255,255,0.45); margin-top: 2px;">priya.r@in.snapledger.co.uk</div>
+              </div>
+
+              <div style="background: oklch(21.8% .008 223.9); border: 1px solid rgba(255,255,255,0.10); border-radius: 10px; padding: 24px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; text-align: center;">
+                <div style="font-size: 15px; font-weight: 600;">Got paper in front of you?</div>
+                <div style="width: 132px; height: 132px; border-radius: 10px; background: rgba(255,255,255,0.92); display: grid; grid-template-columns: repeat(7, 1fr); grid-template-rows: repeat(7, 1fr); gap: 3px; padding: 12px; box-sizing: border-box;">
+                  <div style="background: #111; grid-column: 1 / 3; grid-row: 1 / 3;"></div>
+                  <div style="background: #111; grid-column: 4 / 5; grid-row: 1 / 2;"></div>
+                  <div style="background: #111; grid-column: 6 / 8; grid-row: 1 / 3;"></div>
+                  <div style="background: #111; grid-column: 4 / 5; grid-row: 3 / 4;"></div>
+                  <div style="background: #111; grid-column: 2 / 3; grid-row: 4 / 5;"></div>
+                  <div style="background: #111; grid-column: 4 / 6; grid-row: 4 / 5;"></div>
+                  <div style="background: #111; grid-column: 7 / 8; grid-row: 4 / 5;"></div>
+                  <div style="background: #111; grid-column: 1 / 3; grid-row: 6 / 8;"></div>
+                  <div style="background: #111; grid-column: 4 / 5; grid-row: 6 / 7;"></div>
+                  <div style="background: #111; grid-column: 5 / 8; grid-row: 7 / 8;"></div>
+                  <div style="background: #111; grid-column: 6 / 7; grid-row: 5 / 6;"></div>
+                </div>
+                <div style="font-size: 13px; line-height: 1.6; color: rgba(255,255,255,0.6); max-width: 240px; text-wrap: pretty;">Scan this to open the camera on your phone. Shoot as many as you like — they land in the same queue.</div>
+              </div>
+            </div>
+
+            <div style="background: oklch(21.8% .008 223.9); border: 1px solid rgba(255,255,255,0.10); border-radius: 10px; overflow: hidden; flex-shrink: 0;">
+              <div style="padding: 14px 18px; border-bottom: 1px solid rgba(255,255,255,0.10); display: flex; align-items: center; gap: 10px;">
+                <div style="width: 20px; height: 20px; border-radius: 999px; background: color-mix(in srgb, oklch(72.3% .219 149.579) 18%, transparent); display: flex; align-items: center; justify-content: center;">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="oklch(79.2% .209 151.711)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>
+                </div>
+                <div style="font-size: 14px; font-weight: 600;">Just filed</div>
+                <div style="font-size: 13px; color: rgba(255,255,255,0.5);">1 receipt from your phone, nothing to fill in</div>
+              </div>
+              <div style="display: grid; grid-template-columns: 1.6fr 1.2fr 1.4fr 0.8fr 0.8fr; gap: 16px; padding: 10px 18px; border-bottom: 1px solid rgba(255,255,255,0.10); font-size: 12px; font-weight: 500; color: rgba(255,255,255,0.55);">
+                <div>Merchant</div>
+                <div>Category</div>
+                <div>Matched to</div>
+                <div style="text-align: right;">VAT</div>
+                <div style="text-align: right;">Amount</div>
+              </div>
+              <div style="display: grid; grid-template-columns: 1.6fr 1.2fr 1.4fr 0.8fr 0.8fr; gap: 16px; padding: 0 18px; height: 56px; align-items: center;">
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                  <div style="font-size: 14px; font-weight: 500;">NCP Car Park, Leeds</div>
+                  <div style="font-size: 12px; color: rgba(255,255,255,0.5);">Photographed 09 Jul · you can bin the paper</div>
+                </div>
+                <div style="font-size: 13px; color: rgba(255,255,255,0.7);">Parking and tolls</div>
+                <div style="font-family: 'Geist Mono', monospace; font-size: 12px; color: rgba(255,255,255,0.6);">NATWEST 09 JUL</div>
+                <div style="font-family: 'Geist Mono', monospace; font-size: 13px; text-align: right;">£1.33</div>
+                <div style="font-family: 'Geist Mono', monospace; font-size: 13px; text-align: right;">£8.00</div>
+              </div>
+            </div>
+
+            <div style="border: 1px solid rgba(255,255,255,0.10); border-radius: 10px; padding: 18px; background: rgba(255,255,255,0.03); display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-shrink: 0;">
+              <div style="font-size: 13px; line-height: 1.55; color: rgba(255,255,255,0.75); max-width: 620px; text-wrap: pretty;">This is your 31st NCP Leeds receipt. Want us to expect one every Tuesday and chase it if it does not arrive?</div>
+              <div style="display: flex; align-items: center; gap: 10px; flex-shrink: 0;">
+                <div style="height: 36px; box-sizing: border-box; border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; padding: 0 16px; display: flex; align-items: center; font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.85);">Not now</div>
+                <div style="height: 36px; box-sizing: border-box; border-radius: 8px; padding: 0 16px; display: flex; align-items: center; background: oklch(48.8% .243 264.376); font-size: 13px; font-weight: 500;">Yes, Expect It</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </x-import>
+  </div>
+
+  <div style="max-width: 1240px; display: flex; flex-direction: column; gap: 16px;">
+    <div style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: oklch(87.9% .169 91.605); border-left: 3px solid oklch(76.9% .188 70.08); padding-left: 10px;">How the two surfaces divide</div>
+    <div style="border: 1px solid rgba(255,255,255,0.10); border-radius: 10px; background: oklch(21.8% .008 223.9); overflow: hidden;">
+      <div style="display: grid; grid-template-columns: 1.2fr 1fr 1fr 1.4fr; gap: 20px; padding: 14px 20px; border-bottom: 1px solid rgba(255,255,255,0.10); font-size: 12px; font-weight: 500; color: rgba(255,255,255,0.55);">
+        <div>Job</div>
+        <div>Mobile</div>
+        <div>Web</div>
+        <div>Why it lands there</div>
+      </div>
+      <div style="display: grid; grid-template-columns: 1.2fr 1fr 1fr 1.4fr; gap: 20px; padding: 16px 20px; border-bottom: 1px solid rgba(255,255,255,0.10); align-items: baseline;">
+        <div style="font-size: 14px; font-weight: 500;">Connect and prove value</div>
+        <div style="font-size: 13px; color: rgba(255,255,255,0.6);">Possible</div>
+        <div style="font-size: 13px; color: oklch(79.2% .209 151.711);">Primary</div>
+        <div style="font-size: 13px; line-height: 1.6; color: rgba(255,255,255,0.7);">OAuth across three services, then reading a 90-day diff. Nobody does this standing up.</div>
+      </div>
+      <div style="display: grid; grid-template-columns: 1.2fr 1fr 1fr 1.4fr; gap: 20px; padding: 16px 20px; border-bottom: 1px solid rgba(255,255,255,0.10); align-items: baseline;">
+        <div style="font-size: 14px; font-weight: 500;">Weekly review</div>
+        <div style="font-size: 13px; color: oklch(79.2% .209 151.711);">Primary</div>
+        <div style="font-size: 13px; color: rgba(255,255,255,0.6);">Equal</div>
+        <div style="font-size: 13px; line-height: 1.6; color: rgba(255,255,255,0.7);">Three items in ninety seconds suits a phone. The same queue at desk width is faster still, and quarter-end catch-up is a desk job.</div>
+      </div>
+      <div style="display: grid; grid-template-columns: 1.2fr 1fr 1fr 1.4fr; gap: 20px; padding: 16px 20px; border-bottom: 1px solid rgba(255,255,255,0.10); align-items: baseline;">
+        <div style="font-size: 14px; font-weight: 500;">Paper capture</div>
+        <div style="font-size: 13px; color: oklch(79.2% .209 151.711);">Primary</div>
+        <div style="font-size: 13px; color: rgba(255,255,255,0.6);">Fallback</div>
+        <div style="font-size: 13px; line-height: 1.6; color: rgba(255,255,255,0.7);">Only the phone is in the car park. The web version exists for PDFs and for scanning the hand-off code.</div>
+      </div>
+      <div style="display: grid; grid-template-columns: 1.2fr 1fr 1fr 1.4fr; gap: 20px; padding: 16px 20px; align-items: baseline;">
+        <div style="font-size: 14px; font-weight: 500;">Correcting a wrong match</div>
+        <div style="font-size: 13px; color: rgba(255,255,255,0.6);">Possible</div>
+        <div style="font-size: 13px; color: oklch(79.2% .209 151.711);">Primary</div>
+        <div style="font-size: 13px; line-height: 1.6; color: rgba(255,255,255,0.7);">Searching transactions and reassigning is the one task that wants a keyboard. Still to be designed on either surface.</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;showRationale&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Teaching annotations&quot;},&quot;showShellSpec&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Teaching annotations&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      showRationale: this.props.showRationale ?? true,
+      showShellSpec: this.props.showShellSpec ?? true,
+      tabsHome: [{ title: "SnapLedger — Home" }, { title: "FreeAgent" }],
+      tabsReview: [{ title: "SnapLedger — Review" }, { title: "FreeAgent" }],
+      tabsSetup: [{ title: "SnapLedger — Setup" }],
+      tabsAdd: [{ title: "SnapLedger — Receipts" }, { title: "FreeAgent" }],
+    };
+  }
+}
+</script>
+</body>
+</html>
