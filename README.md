@@ -45,10 +45,11 @@ data loaded. If you do, you're ready.
 | `app/` | Next.js app — a minimal shell (layout + home page). Your stories add the real screens. |
 | `data/receipts.json` | Seed data: one week of receipts, including the awkward ones (a personal card, a missing VAT line, a duplicate, one in euros). |
 | `lib/receipts.js` | Helpers for reading the seed data. Build on these rather than importing the JSON directly. |
-| `design/snapledger-web.html` | The design reference — five desktop screens. Open it in a browser; Claude Code can read it directly. See `design/README.md`. |
+| `design/snapledger-web.html` | The design reference — five **desktop** screens at 1400 × 880. Open it in a browser; Claude Code can read it directly. **No mobile design ships in this repo** — deriving the phone layout is your job. See `design/README.md`. |
 | `evals/` | **40 realistic sample receipt images and an answer key** — the material for the homework eval task. Start at `evals/README.md`. |
 | `CLAUDE.md` | Conventions Claude Code follows in this repo. Read it once — it's short. |
 | `.mcp.json` | Project-scoped MCP config: gives Claude Code Jira/Confluence access in this repo. |
+| `.env.example` | Template for `.env.local`. Copy it, add your Anthropic API key. Never commit `.env.local`. |
 
 ## Deploying (homework stretch)
 

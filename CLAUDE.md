@@ -17,18 +17,24 @@ file and not by your own product instincts. Build what the ticket says.
    say so and ask before you build — never guess silently.** When you open the
    PR, list what was ambiguous and what you decided. That feedback is the point
    of the exercise.
-2. **One story, one branch, one PR.** Branch `feat/<ISSUE-KEY>`, commit messages
-   start with the issue key (e.g. `SNAP-12: add review queue list`).
+2. **One story, one branch, one PR.** Use [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/)
+   for branch names and commit messages alike. Branch `<type>/<ISSUE-KEY>`
+   (e.g. `feat/SNAP-12`); commit `<type>(<ISSUE-KEY>): <summary>` (e.g.
+   `feat(SNAP-12): add review queue list`). Types: `feat`, `fix`, `docs`,
+   `refactor`, `test`, `chore`. Work with no ticket behind it drops the scope
+   (e.g. `chore: ignore env files`).
 3. **No new dependencies without asking.** The scaffold deliberately has almost
    none. If a story seems to need a library, propose it and wait.
 4. **Data:** read seed data through `lib/receipts.js`, not by importing the JSON
    directly. Don't change the shape of `data/receipts.json` without flagging it —
    other stories build on the same fields.
-5. **Design:** the reference is `design/snapledger-web.html` (five desktop
-   screens — read the file, it's self-describing). Follow its structure and
+5. **Design:** the reference is `design/snapledger-web.html` (five screens at
+   1400 × 880 — read the file, it's self-describing). Follow its structure and
    tone: calm, dense-but-legible, cards at 10px radius, tables as divided rows.
    Approximate it in plain CSS using the tokens in `globals.css`; don't
-   pixel-chase. Every screen must also work at phone width (~390px).
+   pixel-chase. **It is a desktop reference only — the repo ships no mobile
+   design**, so the phone layout is yours to derive, and every screen must also
+   work at phone width (~390px). Flag layout calls the reference didn't cover.
 6. **Tests:** if the story or the ticket asks for tests, use Vitest (ask before
    adding it — see rule 3). Test files sit next to the code as `*.test.js`.
 7. **Secrets:** API keys live in `.env.local` (gitignored). Never write a key
