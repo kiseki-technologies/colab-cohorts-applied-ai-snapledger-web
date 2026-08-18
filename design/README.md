@@ -1,9 +1,12 @@
 # Design reference
 
 `snapledger-web.html` is the SnapLedger web design concept — five desktop
-screens at 1400 × 880, exported as a single self-contained page. Open it in a
-browser to view it; Claude Code can read the file directly when implementing a
-story.
+screens at 1400 × 880. Open it in a browser to view it; Claude Code can read the
+file directly when implementing a story.
+
+Keep `support.js` next to it — the page loads that runtime to render, and
+viewing needs an internet connection (the runtime pulls React and Babel from a
+CDN). Reading the file as markup, which is what Claude Code does, needs neither.
 
 The five screens: **Home** (the week at a glance, what needs you), the **review
 queue** (receipts that stopped and why), the **business-or-personal decision**,
